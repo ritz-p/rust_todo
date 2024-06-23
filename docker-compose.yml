@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  rust:
+    container_name: rust_todo
+    env_file:
+      - .env
+    build: .
+    tty: true
+    volumes:
+      - .:/workspace
+    ports:
+      - ${PORT}:${PORT}
