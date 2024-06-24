@@ -1,0 +1,10 @@
+###
+GET http://127.0.0.1:8080/
+
+###
+POST http://127.0.0.1:8080/users
+Content-Type: application/json
+
+{
+    "username": "test"
+}
