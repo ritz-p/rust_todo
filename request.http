@@ -8,3 +8,30 @@ Content-Type: application/json
 {
     "username": "test"
 }
+
+###
+POST http://127.0.0.1:8080/todos
+Content-Type: application/json
+
+{
+    "text": "動作確認"
+}
+
+###
+GET http://127.0.0.1:8080/todos
+
+###
+GET http://127.0.0.1:8080/todos/1
+
+###
+PATCH http://127.0.0.1:8080/todos/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "text": "動作確認2",
+    "completed": true
+}
+
+###
+DELETE http://127.0.0.1:8080/todos/1

@@ -1,6 +1,9 @@
-use std::{collections::HashMap,sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard}};
 use anyhow::Context;
-use serde::{Serialize,Deserialize};
+use serde::{Deserialize, Serialize};
+use std::{
+    collections::HashMap,
+    sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
+};
 use thiserror::Error;
 #[derive(Debug, Error)]
 enum RepositoryError {
@@ -26,6 +29,13 @@ pub struct Todo {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct CreateTodo {
     text: String,
+}
+
+#[cfg(test)]
+impl CreateTodo{
+    pub fn new(text: String) -> Self{
+        Self{ text }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
@@ -58,11 +68,11 @@ impl TodoRepositoryForMemory {
         }
     }
 
-    fn write_store_ref(&self) -> RwLockWriteGuard<TodoDataMap>{
+    fn write_store_ref(&self) -> RwLockWriteGuard<TodoDataMap> {
         self.store.write().unwrap()
     }
 
-    fn read_store_ref(&self) -> RwLockReadGuard<TodoDataMap>{
+    fn read_store_ref(&self) -> RwLockReadGuard<TodoDataMap> {
         self.store.read().unwrap()
     }
 }
@@ -70,9 +80,9 @@ impl TodoRepositoryForMemory {
 impl TodoRepository for TodoRepositoryForMemory {
     fn create(&self, payload: CreateTodo) -> Todo {
         let mut store = self.write_store_ref();
-        let id = (store.len() + 1 ) as i32;
+        let id = (store.len() + 1) as i32;
         let todo = Todo::new(id, payload.text.clone());
-        store.insert(id,todo.clone());
+        store.insert(id, todo.clone());
         todo
     }
 
@@ -83,7 +93,7 @@ impl TodoRepository for TodoRepositoryForMemory {
 
     fn all(&self) -> Vec<Todo> {
         let store = self.read_store_ref();
-        Vec::from_iter(store.values().map(|todo|todo.clone()))
+        Vec::from_iter(store.values().map(|todo| todo.clone()))
     }
 
     fn update(&self, id: i32, payload: UpdateTodo) -> anyhow::Result<Todo> {
@@ -92,12 +102,12 @@ impl TodoRepository for TodoRepositoryForMemory {
         let text = payload.text.unwrap_or(todo_con.text.clone());
         let completed = payload.completed.unwrap_or(todo_con.completed);
 
-        let todo = Todo{
+        let todo = Todo {
             id,
             text,
-            completed
+            completed,
         };
-        store.insert(id,todo.clone());
+        store.insert(id, todo.clone());
         Ok(todo)
     }
 
@@ -113,32 +123,40 @@ mod test {
     use super::*;
 
     #[test]
-    fn todo_crud_scenario(){
+    fn todo_crud_scenario() {
         let text = "todo text".to_string();
         let id = 1;
-        let expected = Todo::new(id,text.clone());
+        let expected = Todo::new(id, text.clone());
 
         let repository = TodoRepositoryForMemory::new();
-        let todo = repository.create(CreateTodo{ text });
+        let todo = repository.create(CreateTodo { text });
 
-        assert_eq!(expected,todo);
+        assert_eq!(expected, todo);
 
         let todo = repository.find(todo.id).unwrap();
-        assert_eq!(expected,todo);
+        assert_eq!(expected, todo);
 
         let todo = repository.all();
-        assert_eq!(vec![expected],todo);
+        assert_eq!(vec![expected], todo);
 
         let text = "update todo text".to_string();
-        let todo = repository.update(1, UpdateTodo{
-            text: Some(text.clone()),
-            completed: Some(true)
-        }).expect("failed update todo.");
-        assert_eq!(Todo{
-            id,
-            text,
-            completed: true,
-        },todo);
+        let todo = repository
+            .update(
+                1,
+                UpdateTodo {
+                    text: Some(text.clone()),
+                    completed: Some(true),
+                },
+            )
+            .expect("failed update todo.");
+        assert_eq!(
+            Todo {
+                id,
+                text,
+                completed: true,
+            },
+            todo
+        );
 
         let res = repository.delete(id);
         assert!(res.is_ok());
