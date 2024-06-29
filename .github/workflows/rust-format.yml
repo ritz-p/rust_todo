@@ -34,18 +34,3 @@ jobs:
     - name: push output
       run: |
           echo "pr_number=${{ steps.pr.outputs.pull-request-number }}" >> $GITHUB_ENV
-
-  merge:
-    needs: format
-    runs-on: ubuntu-latest
-    if: success()
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Merge pull request
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        gh pr merge ${{ env.pr_number }} --merge --auto --delete-branch
