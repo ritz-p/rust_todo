@@ -30,7 +30,7 @@ pub struct Todo {
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Validate)]
 pub struct CreateTodo {
-    #[validate(length(min = 1 , max = 100, message = "text must be between 1 ~ 100"))]
+    #[validate(length(min = 1, max = 100, message = "text must be between 1 ~ 100"))]
     text: String,
 }
 
@@ -41,9 +41,9 @@ impl CreateTodo {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq,Validate)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Validate)]
 pub struct UpdateTodo {
-    #[validate(length(min = 1 , max = 100, message = "text must be between 1 ~ 100"))]
+    #[validate(length(min = 1, max = 100, message = "text must be between 1 ~ 100"))]
     text: Option<String>,
     completed: Option<bool>,
 }

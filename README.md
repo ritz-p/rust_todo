@@ -3,3 +3,4 @@
     - to_bytes() はメモリを無制限に使用される可能性があったため消された
 - impl<T,S> FromRequest<S> for ValidateJson<T>
     - from_request の引数が req だけでなく state も必要になった
+    - fron_request 追っていったら state 使ってなくて草
