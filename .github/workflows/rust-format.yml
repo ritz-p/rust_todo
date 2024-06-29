@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
@@ -19,20 +19,21 @@ jobs:
         toolchain: stable
         override: true
 
-    - name: Install rustfmt
+    - name: install rustfmt
       run: rustup component add rustfmt
 
-    - name: Run rustfmt
+    - name: run rustfmt
       run: cargo fmt
-
-    - name: Commit changes if any
+    - name: create pull request
+      id: pr
+      uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'fix: format rust file'
+          title: Auto format .rs files
+          branch: fmt/rust
+    - name: push output
       run: |
-        if ! git diff --exit-code; then
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -am "Format code with rustfmt"
-          git push
-        fi
+          echo "pr_number=${{ steps.pr.outputs.pull-request-number }}" >> $GITHUB_ENV
 
   merge:
     needs: format
@@ -41,10 +42,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Merge pull request
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh pr merge ${{ github.event.pull_request.number }} --merge --auto --delete-branch
+        gh pr merge ${{ env.pr_number }} --merge --auto --delete-branch
