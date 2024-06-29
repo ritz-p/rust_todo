@@ -3,7 +3,7 @@ name: Format and Merge
 on:
   push:
     branch: master
-    paths: '**/*.rs'
+    paths: ['**/*.rs','.github/workflows/rust-format.yml']
 
 jobs:
   format:
@@ -23,7 +23,7 @@ jobs:
       run: rustup component add rustfmt
 
     - name: Run rustfmt
-      run: cargo fmt -- --check
+      run: cargo fmt
 
     - name: Commit changes if any
       run: |
