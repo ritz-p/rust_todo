@@ -1,20 +1,28 @@
 ###
 GET http://127.0.0.1:8080/
 
-###
-POST http://127.0.0.1:8080/users
-Content-Type: application/json
-
-{
-    "username": "test"
-}
-
-###
+### 成功
 POST http://127.0.0.1:8080/todos
 Content-Type: application/json
 
 {
     "text": "動作確認"
+}
+
+### バリデーション失敗(min
+POST http://127.0.0.1:8080/todos
+Content-Type: application/json
+
+{
+    "text": ""
+}
+
+### バリデーション失敗(max
+POST http://127.0.0.1:8080/todos
+Content-Type: application/json
+
+{
+    "text": "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
 }
 
 ###
@@ -23,7 +31,7 @@ GET http://127.0.0.1:8080/todos
 ###
 GET http://127.0.0.1:8080/todos/1
 
-###
+### 成功
 PATCH http://127.0.0.1:8080/todos/1
 Content-Type: application/json
 
@@ -31,6 +39,22 @@ Content-Type: application/json
     "id": 1,
     "text": "動作確認2",
     "completed": true
+}
+
+### バリデーション失敗(min
+PATCH http://127.0.0.1:8080/todos/1
+Content-Type: application/json
+
+{
+    "text": ""
+}
+
+### バリデーション失敗(max
+PATCH http://127.0.0.1:8080/todos/1
+Content-Type: application/json
+
+{
+    "text": "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
 }
 
 ###

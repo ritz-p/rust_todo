@@ -46,12 +46,10 @@ where
         )
         .route(
             "/todos/:id",
-            get(find_todo::<T>)
-                .delete(delete_todo::<T>)
-                .patch({
-                    let repo = Arc::clone(&repository);
-                    move |id,payload| update_todo::<T>(id,payload,Extension(Arc::clone(&repo)))
-                }),
+            get(find_todo::<T>).delete(delete_todo::<T>).patch({
+                let repo = Arc::clone(&repository);
+                move |id, payload| update_todo::<T>(id, payload, Extension(Arc::clone(&repo)))
+            }),
         )
         .layer(Extension(repository))
 }
@@ -64,21 +62,25 @@ async fn root() -> &'static str {
 mod test {
 
     use super::*;
-    use crate::repositories::{CreateTodo,Todo};
-    use axum::{body::Body, http::{header, Method, Request, StatusCode}, response::Response};
+    use crate::repositories::{CreateTodo, Todo};
+    use axum::{
+        body::Body,
+        http::{header, Method, Request, StatusCode},
+        response::Response,
+    };
     use http_body_util::BodyExt;
     use tower::ServiceExt;
 
-    fn build_todo_req_with_json(path: &str,method: Method,json_body: String) -> Request<Body>{
+    fn build_todo_req_with_json(path: &str, method: Method, json_body: String) -> Request<Body> {
         Request::builder()
             .uri(path)
             .method(method)
-            .header(header::CONTENT_TYPE,mime::APPLICATION_JSON.as_ref())
+            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
             .body(Body::from(json_body))
             .unwrap()
     }
 
-    fn build_todo_req_with_empty(method: Method,path: &str) -> Request<Body>{
+    fn build_todo_req_with_empty(method: Method, path: &str) -> Request<Body> {
         Request::builder()
             .uri(path)
             .method(method)
@@ -86,31 +88,36 @@ mod test {
             .unwrap()
     }
 
-    async fn res_to_todo(res: Response) -> Todo{
+    async fn res_to_todo(res: Response) -> Todo {
         let bytes = res.into_body().collect().await.unwrap().to_bytes();
         let body = String::from_utf8(bytes.to_vec()).unwrap();
 
-        let todo:Todo = serde_json::from_str(&body).expect(&format!("cannot convert Todo instane. body: {}",body));
+        let todo: Todo = serde_json::from_str(&body)
+            .expect(&format!("cannot convert Todo instane. body: {}", body));
         todo
     }
 
     #[tokio::test]
-    async fn should_created_todo(){
-        let expected = Todo::new(1,"should_return_created_todo".to_string());
+    async fn should_created_todo() {
+        let expected = Todo::new(1, "should_return_created_todo".to_string());
 
         let repository = TodoRepositoryForMemory::new();
-        let req = build_todo_req_with_json("/todos", Method::POST, r#"{ "text": "should_return_created_todo" }"#.to_string());
+        let req = build_todo_req_with_json(
+            "/todos",
+            Method::POST,
+            r#"{ "text": "should_return_created_todo" }"#.to_string(),
+        );
 
         let res = create_app(repository).oneshot(req).await.unwrap();
 
         let todo = res_to_todo(res).await;
 
-        assert_eq!(expected,todo);
+        assert_eq!(expected, todo);
     }
 
     #[tokio::test]
-    async fn should_find_todo(){
-        let expected = Todo::new(1,"should_find_todo".to_string());
+    async fn should_find_todo() {
+        let expected = Todo::new(1, "should_find_todo".to_string());
 
         let repository = TodoRepositoryForMemory::new();
         repository.create(CreateTodo::new("should_find_todo".to_string()));
@@ -121,12 +128,12 @@ mod test {
 
         let todo = res_to_todo(res).await;
 
-        assert_eq!(expected,todo);
+        assert_eq!(expected, todo);
     }
 
     #[tokio::test]
-    async fn should_get_all_todos(){
-        let expected = Todo::new(1,"should_get_all_todos".to_string());
+    async fn should_get_all_todos() {
+        let expected = Todo::new(1, "should_get_all_todos".to_string());
 
         let repository = TodoRepositoryForMemory::new();
         repository.create(CreateTodo::new("should_get_all_todos".to_string()));
@@ -138,29 +145,34 @@ mod test {
         let bytes = res.into_body().collect().await.unwrap().to_bytes();
         let body = String::from_utf8(bytes.to_vec()).unwrap();
 
-        let todo_list:Vec<Todo> = serde_json::from_str(&body).expect(&format!("cannot convert Todo instance. body: {}",body));
+        let todo_list: Vec<Todo> = serde_json::from_str(&body)
+            .expect(&format!("cannot convert Todo instance. body: {}", body));
 
-        assert_eq!(vec![expected],todo_list);
+        assert_eq!(vec![expected], todo_list);
     }
 
     #[tokio::test]
-    async fn should_update_todo(){
-        let expected = Todo::new(1,"should_update_todo".to_string());
+    async fn should_update_todo() {
+        let expected = Todo::new(1, "should_update_todo".to_string());
 
         let repository = TodoRepositoryForMemory::new();
         repository.create(CreateTodo::new("before_update_todo".to_string()));
 
-        let req = build_todo_req_with_json("/todos/1", Method::PATCH, r#"{ "id": 1,"text": "should_update_todo", "completed": false}"#.to_string());
+        let req = build_todo_req_with_json(
+            "/todos/1",
+            Method::PATCH,
+            r#"{ "id": 1,"text": "should_update_todo", "completed": false}"#.to_string(),
+        );
 
         let res = create_app(repository).oneshot(req).await.unwrap();
 
         let todo = res_to_todo(res).await;
 
-        assert_eq!(expected,todo);
+        assert_eq!(expected, todo);
     }
 
     #[tokio::test]
-    async fn should_delete_todo(){
+    async fn should_delete_todo() {
         let repository = TodoRepositoryForMemory::new();
         repository.create(CreateTodo::new("should_delete_todo".to_string()));
 
@@ -168,6 +180,6 @@ mod test {
 
         let res = create_app(repository).oneshot(req).await.unwrap();
 
-        assert_eq!(StatusCode::NO_CONTENT,res.status());
+        assert_eq!(StatusCode::NO_CONTENT, res.status());
     }
 }

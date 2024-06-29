@@ -5,6 +5,8 @@ use std::{
     sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
 };
 use thiserror::Error;
+use validator::Validate;
+
 #[derive(Debug, Error)]
 enum RepositoryError {
     #[error("NotFound, id is {0}")]
@@ -26,20 +28,22 @@ pub struct Todo {
     completed: bool,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Validate)]
 pub struct CreateTodo {
+    #[validate(length(min = 1 , max = 100, message = "text must be between 1 ~ 100"))]
     text: String,
 }
 
 #[cfg(test)]
-impl CreateTodo{
-    pub fn new(text: String) -> Self{
-        Self{ text }
+impl CreateTodo {
+    pub fn new(text: String) -> Self {
+        Self { text }
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq,Validate)]
 pub struct UpdateTodo {
+    #[validate(length(min = 1 , max = 100, message = "text must be between 1 ~ 100"))]
     text: Option<String>,
     completed: Option<bool>,
 }
