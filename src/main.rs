@@ -2,8 +2,7 @@ mod handlers;
 mod repositories;
 
 use crate::repositories::{TodoRepository, TodoRepositoryForMemory};
-use handlers::{all_todo, 
-    create_todo, delete_todo, find_todo, update_todo};
+use handlers::{all_todo, create_todo, delete_todo, find_todo, update_todo};
 
 use axum::{
     routing::{get, post},
