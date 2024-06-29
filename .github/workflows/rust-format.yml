@@ -1,0 +1,50 @@
+name: Format and Merge
+
+on:
+  push:
+    branch: master
+    paths: '**/*.rs'
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Install rustfmt
+      run: rustup component add rustfmt
+
+    - name: Run rustfmt
+      run: cargo fmt -- --check
+
+    - name: Commit changes if any
+      run: |
+        if ! git diff --exit-code; then
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -am "Format code with rustfmt"
+          git push
+        fi
+
+  merge:
+    needs: format
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Merge pull request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr merge ${{ github.event.pull_request.number }} --merge --auto --delete-branch
