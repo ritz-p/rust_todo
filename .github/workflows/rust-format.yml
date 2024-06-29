@@ -27,10 +27,10 @@ jobs:
     - name: create pull request
       id: pr
       uses: peter-evans/create-pull-request@v5
-        with:
-          commit-message: 'fix: format rust file'
-          title: Auto format .rs files
-          branch: fmt/rust
+      with:
+        commit-message: 'fix: format rust file'
+        title: Auto format .rs files
+        branch: fmt/rust
     - name: push output
       run: |
           echo "pr_number=${{ steps.pr.outputs.pull-request-number }}" >> $GITHUB_ENV
