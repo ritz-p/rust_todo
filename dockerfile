@@ -1,7 +1,7 @@
 FROM rust:latest
 
 RUN apt update && \
-    apt install vim clang cmake libssl-dev build-essential -y
+    apt install vim clang cmake libssl-dev build-essential postgresql-client -y
 RUN rustup component add rls rust-analysis rust-src rustfmt clippy && \
     cargo install cargo-edit cargo-watch && \
     rustup install nightly
