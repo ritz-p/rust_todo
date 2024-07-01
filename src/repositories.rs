@@ -1,4 +1,4 @@
-use anyhow::{Result};
+use anyhow::Result;
 use axum::async_trait;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
@@ -75,13 +75,13 @@ impl TodoRepository for TodoRepositoryForDb {
 }
 
 #[cfg(test)]
-pub mod test_utils{
+pub mod test_utils {
+    use super::*;
     use anyhow::Context;
     use std::{
         collections::HashMap,
-        sync::{Arc,RwLock,RwLockReadGuard,RwLockWriteGuard}
+        sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
     };
-    use super::*;
 
     impl Todo {
         pub fn new(id: i32, text: String) -> Self {
@@ -121,75 +121,75 @@ pub mod test_utils{
             self.store.read().unwrap()
         }
     }
-    
+
     #[async_trait]
     impl TodoRepository for TodoRepositoryForMemory {
-    async fn create(&self, payload: CreateTodo) -> Result<Todo> {
-        let mut store = self.write_store_ref();
-        let id = (store.len() + 1) as i32;
-        let todo = Todo::new(id, payload.text.clone());
-        store.insert(id, todo.clone());
-        Ok(todo)
-    }
+        async fn create(&self, payload: CreateTodo) -> Result<Todo> {
+            let mut store = self.write_store_ref();
+            let id = (store.len() + 1) as i32;
+            let todo = Todo::new(id, payload.text.clone());
+            store.insert(id, todo.clone());
+            Ok(todo)
+        }
 
-    async fn find(&self, id: i32) -> Result<Todo> {
-        let store = self.read_store_ref();
-        let todo = store
-            .get(&id)
-            .map(|todo| todo.clone())
-            .ok_or(RepositoryError::NotFound(id))?;
-        Ok(todo)
-    }
+        async fn find(&self, id: i32) -> Result<Todo> {
+            let store = self.read_store_ref();
+            let todo = store
+                .get(&id)
+                .map(|todo| todo.clone())
+                .ok_or(RepositoryError::NotFound(id))?;
+            Ok(todo)
+        }
 
-    async fn all(&self) -> Result<Vec<Todo>> {
-        let store = self.read_store_ref();
-        Ok(Vec::from_iter(store.values().map(|todo| todo.clone())))
-    }
+        async fn all(&self) -> Result<Vec<Todo>> {
+            let store = self.read_store_ref();
+            Ok(Vec::from_iter(store.values().map(|todo| todo.clone())))
+        }
 
-    async fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo> {
-        let mut store = self.write_store_ref();
-        let todo_con = store.get(&id).context(RepositoryError::NotFound(id))?;
-        let text = payload.text.unwrap_or(todo_con.text.clone());
-        let completed = payload.completed.unwrap_or(todo_con.completed);
+        async fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo> {
+            let mut store = self.write_store_ref();
+            let todo_con = store.get(&id).context(RepositoryError::NotFound(id))?;
+            let text = payload.text.unwrap_or(todo_con.text.clone());
+            let completed = payload.completed.unwrap_or(todo_con.completed);
 
-        let todo = Todo {
-            id,
-            text,
-            completed,
-        };
-        store.insert(id, todo.clone());
-        Ok(todo)
-    }
+            let todo = Todo {
+                id,
+                text,
+                completed,
+            };
+            store.insert(id, todo.clone());
+            Ok(todo)
+        }
 
-    async fn delete(&self, id: i32) -> Result<()> {
-        let mut store = self.write_store_ref();
-        store.remove(&id).ok_or(RepositoryError::NotFound(id))?;
-        Ok(())
+        async fn delete(&self, id: i32) -> Result<()> {
+            let mut store = self.write_store_ref();
+            store.remove(&id).ok_or(RepositoryError::NotFound(id))?;
+            Ok(())
+        }
     }
-}
-    mod test {    
+    mod test {
         use super::*;
-    
+
         #[tokio::test]
         async fn todo_crud_scenario() {
             let text = "todo text".to_string();
             let id = 1;
             let expected = Todo::new(id, text.clone());
-    
+
             let repository = TodoRepositoryForMemory::new();
             let todo = repository
                 .create(CreateTodo { text })
                 .await
                 .expect("failed to create todo");
-    
+
             assert_eq!(expected, todo);
-    
+
             let todo = repository.find(todo.id).await.unwrap();
             assert_eq!(expected, todo);
-    
+
             let todo = repository.all().await.unwrap();
             assert_eq!(vec![expected], todo);
-    
+
             let text = "update todo text".to_string();
             let todo = repository
                 .update(
@@ -209,7 +209,7 @@ pub mod test_utils{
                 },
                 todo
             );
-    
+
             let res = repository.delete(id).await;
             assert!(res.is_ok());
         }
