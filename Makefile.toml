@@ -1,0 +1,18 @@
+[tasks.db_create]
+command = "sqlx"
+args = ["db","create"]
+[tasks.db_migrate]
+command = "sqlx"
+args = ["migrate","run"]
+dependencies = ["db_create"]
+[tasks.format]
+command = "cargo"
+args = ["fmt"]
+[tasks.dev]
+command = "cargo"
+args = ["watch","-x","run"]
+dependencies = ["db_migrate","format"]
+[tasks.test]
+command = "cargo"
+args = ["test"]
+dependencies = ["format"]

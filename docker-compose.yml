@@ -5,6 +5,8 @@ services:
     container_name: rust_todo
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
     build: .
     tty: true
     volumes:
@@ -26,7 +28,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}
-      - POSTGRES_DB=${DB_NAME}
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
       - TZ=Asia/Tokyo
     restart: always

@@ -40,13 +40,16 @@ where
 pub async fn create_todo<T>(
     ValidateJson(payload): ValidateJson<CreateTodo>,
     Extension(repository): Extension<Arc<T>>,
-) -> impl IntoResponse
+) -> Result<impl IntoResponse, StatusCode>
 where
     T: TodoRepository,
 {
-    let todo = repository.create(payload);
+    let todo = repository
+        .create(payload)
+        .await
+        .or(Err(StatusCode::NOT_FOUND))?;
 
-    (StatusCode::CREATED, Json(todo))
+    Ok((StatusCode::CREATED, Json(todo)))
 }
 
 pub async fn find_todo<T>(
@@ -56,16 +59,18 @@ pub async fn find_todo<T>(
 where
     T: TodoRepository,
 {
-    let todo = repository.find(id).ok_or(StatusCode::NOT_FOUND)?;
+    let todo = repository.find(id).await.or(Err(StatusCode::NOT_FOUND))?;
     Ok((StatusCode::OK, Json(todo)))
 }
 
-pub async fn all_todo<T>(Extension(repository): Extension<Arc<T>>) -> impl IntoResponse
+pub async fn all_todo<T>(
+    Extension(repository): Extension<Arc<T>>,
+) -> Result<impl IntoResponse, StatusCode>
 where
     T: TodoRepository,
 {
-    let todo = repository.all();
-    (StatusCode::OK, Json(todo))
+    let todo = repository.all().await.unwrap();
+    Ok((StatusCode::OK, Json(todo)))
 }
 
 pub async fn update_todo<T>(
@@ -78,6 +83,7 @@ where
 {
     let todo = repository
         .update(id, payload)
+        .await
         .or(Err(StatusCode::NOT_FOUND))?;
     Ok((StatusCode::OK, Json(todo)))
 }
@@ -91,6 +97,7 @@ where
 {
     repository
         .delete(id)
+        .await
         .map(|_| StatusCode::NO_CONTENT)
         .unwrap_or(StatusCode::NOT_FOUND)
 }
