@@ -115,6 +115,83 @@ impl TodoRepository for TodoRepositoryForDb {
 }
 
 #[cfg(test)]
+#[cfg(feature = "database-test")]
+mod test {
+    use super::*;
+    use dotenv::dotenv;
+    use sqlx::PgPool;
+    use std::env;
+
+    #[tokio::test]
+    async fn crud_scenario() {
+        dotenv().ok();
+        let db_user = env::var("DB_USER").expect("DB_USER undefined");
+        let db_password = env::var("DB_PASSWORD").expect("DB_PASSWORD undefined");
+        let db_host = env::var("DB_HOST").expect("DB_HOST undefined");
+        let db_port = env::var("DB_PORT").expect("DB_PORT undefined");
+        let db_name = env::var("DB_NAME").expect("DB_NAME undefined");
+        let database_url = format!(
+            "postgres://{}:{}@{}:{}/{}",
+            db_user, db_password, db_host, db_port, db_name
+        );
+        let pool = PgPool::connect(&database_url).await.expect(&format!(
+            "failed to connect database, url is [{}]",
+            database_url
+        ));
+        let repository = TodoRepositoryForDb::new(pool.clone());
+        let todo_text = "[crud_scenario] text";
+
+        let created = repository
+            .create(CreateTodo::new(todo_text.to_string()))
+            .await
+            .expect("[create] returned Err");
+        assert_eq!(created.text, todo_text);
+        assert!(!created.completed);
+
+        let todo = repository
+            .find(created.id)
+            .await
+            .expect("[find] returned Err");
+        assert_eq!(created, todo);
+
+        let todos = repository.all().await.expect("[all] returned Err");
+        let todo = todos.first().unwrap();
+        assert_eq!(created, *todo);
+
+        let updated_text = "[crud_scenario] updated text";
+        let todo = repository
+            .update(
+                todo.id,
+                UpdateTodo {
+                    text: Some(updated_text.to_string()),
+                    completed: Some(true),
+                },
+            )
+            .await
+            .expect("[update] returned Err");
+
+        assert_eq!(created.id, todo.id);
+        assert_eq!(todo.text, updated_text);
+
+        repository
+            .delete(todo.id)
+            .await
+            .expect("[delete] returned Err");
+
+        let res = repository.find(created.id).await;
+        assert!(res.is_err());
+
+        let todo_rows = sqlx::query(r#"select * from todos where id=$1"#)
+            .bind(todo.id)
+            .fetch_all(&pool)
+            .await
+            .expect("[delete] todo_labels fetch error");
+
+        assert!(todo_rows.len() == 0)
+    }
+}
+
+#[cfg(test)]
 pub mod test_utils {
     use super::*;
     use anyhow::Context;
