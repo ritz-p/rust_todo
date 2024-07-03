@@ -1,35 +1,35 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
 [tasks.db_create]
 command = "sqlx"
 args = ["db","create"]
 
-[tasks.db_migrate]
+[tasks.migrate]
 command = "sqlx"
 args = ["migrate","run"]
 dependencies = ["db_create"]
-cwd = "./rust-todo-backend/"
+cwd = "/workspace"
 
 [tasks.format]
 command = "cargo"
 args = ["fmt"]
 
-[tasks.dev_back]
+[tasks.back]
 command = "cargo"
-args = ["watch","-x","run"]
-dependencies = ["db_migrate","format"]
-cwd = "./rust-todo-backend/"
-
-[tasks.test_back]
-command = "cargo"
-args = ["test"]
+args = ["watch","-x","run","-C","rust-todo-backend"]
 dependencies = ["format"]
-cwd = "./rust-todo-backend"
 
-[tasks.test_alone_b]
+[tasks.back_test]
 command = "cargo"
-args = ["test","--no-default-features"]
+args = ["test","--bin","rust-todo-backend"]
 dependencies = ["format"]
-cwd = "./rust-todo-backend"
 
-[tasks.ls]
-command = "ls"
-cwd = "./rust-todo-backend/"
+[tasks.back_test_alone]
+command = "cargo"
+args = ["test","--no-default-features","--bin","rust-todo-backend"]
+dependencies = ["format"]
+
+[tasks.echo]
+command = "echo"
+args = ["${CARGO_MAKE_WORKING_DIRECTORY}"]
