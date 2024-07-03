@@ -6,30 +6,22 @@ args = ["db","create"]
 command = "sqlx"
 args = ["migrate","run"]
 dependencies = ["db_create"]
-cwd = "./rust-todo-backend/"
 
 [tasks.format]
 command = "cargo"
 args = ["fmt"]
 
-[tasks.dev_back]
+[tasks.dev]
 command = "cargo"
 args = ["watch","-x","run"]
 dependencies = ["db_migrate","format"]
-cwd = "./rust-todo-backend/"
 
-[tasks.test_back]
+[tasks.test]
 command = "cargo"
 args = ["test"]
 dependencies = ["format"]
-cwd = "./rust-todo-backend"
 
-[tasks.test_alone_b]
+[tasks.test_alone]
 command = "cargo"
 args = ["test","--no-default-features"]
 dependencies = ["format"]
-cwd = "./rust-todo-backend"
-
-[tasks.ls]
-command = "ls"
-cwd = "./rust-todo-backend/"

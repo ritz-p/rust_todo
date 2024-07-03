@@ -1,11 +1,12 @@
-[package]
-name = "rust-todo"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+members = [
+    "rust-todo-backend",
+    "rust-todo-frontend"
+]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+resolver = "2"
 
-[dependencies]
+[workspace.dependencies]
 anyhow = "1.0.86"
 axum = "0.7.5"
 dotenv = "0.15.0"
@@ -23,7 +24,3 @@ tower = "0.4.13"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 validator = { version = "0.18.1", features = ["derive"] }
-
-[features]
-default = ["database-test"]
-database-test = []

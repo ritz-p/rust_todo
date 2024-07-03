@@ -12,7 +12,8 @@ services:
     volumes:
       - .:/workspace
     ports:
-      - ${PORT}:${PORT}
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
     networks:
       - rust_todo_net
   db:
