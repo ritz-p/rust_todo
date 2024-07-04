@@ -24,3 +24,5 @@ tower = "0.4.13"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 validator = { version = "0.18.1", features = ["derive"] }
+yew = { version = "0.21",features = ["csr"] }
+gloo = "0.11.0"
