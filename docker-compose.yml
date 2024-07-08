@@ -7,10 +7,20 @@ services:
       - .env
     environment:
       - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+      - DISPLAY=$DISPLAY
+      - WAYLAND_DISPLAY=$WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR=/tmp
+      - PULSE_SERVER=$PULSE_SERVER
     build: .
     tty: true
     volumes:
       - .:/workspace
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+      - type: bind
+        source: "${XDG_RUNTIME_DIR}/wayland-0"
+        target: /tmp/wayland-0
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
