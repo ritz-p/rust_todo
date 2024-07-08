@@ -1,22 +1,8 @@
-use gloo::console;
-use yew::prelude::*;
+mod app;
 
-#[function_component]
-fn App() -> Html {
-    console::log!("Hello log!");
-    console::debug!("Hello debug!");
-    console::info!("Hello info!");
-    console::warn!("Hello warn!");
-    console::assert!(true, "Hello world!");
-    console::assert!(false, "This will fail!");
-    console::table!([0, 1, 2], ["a", "b"]);
-    html! {
-        <div>
-            {"hello yew"}
-        </div>
-    }
-}
+use app::App;
 
 fn main() {
+    console_error_panic_hook::set_once();
     yew::Renderer::<App>::new().render();
 }

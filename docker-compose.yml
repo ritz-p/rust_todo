@@ -31,7 +31,6 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
       - TZ=Asia/Tokyo
-    restart: always
     networks:
       - rust_todo_net
 volumes:
