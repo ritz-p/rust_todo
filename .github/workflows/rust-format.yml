@@ -13,12 +13,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
-
     - name: install rustfmt
       run: rustup component add rustfmt
 
