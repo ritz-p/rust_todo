@@ -1,12 +1,16 @@
-use std::{borrow::{Borrow, BorrowMut}, cell::RefCell, rc::Rc};
+use std::{
+    borrow::{Borrow, BorrowMut},
+    cell::RefCell,
+    rc::Rc,
+};
 
 use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::spawn_local;
-use yew::prelude::*;
-use web_sys::HtmlInputElement;
 use wasm_bindgen::JsCast;
+use wasm_bindgen_futures::spawn_local;
+use web_sys::HtmlInputElement;
+use yew::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
@@ -32,7 +36,11 @@ pub fn app() -> Html {
         let todo_list = todo_list.clone();
         Callback::from(move |_| {
             let mut todos = (*todo_list).clone();
-            todos.push(Todo{id:1,text: "test".to_string(),completed:false});
+            todos.push(Todo {
+                id: 1,
+                text: "test".to_string(),
+                completed: false,
+            });
             todo_list.set(todos.to_vec())
         })
     };
@@ -52,9 +60,9 @@ pub fn app() -> Html {
     }
 }
 
-#[derive(Clone,PartialEq)]
-struct Todo{
+#[derive(Clone, PartialEq)]
+struct Todo {
     id: usize,
     text: String,
-    completed: bool
+    completed: bool,
 }
