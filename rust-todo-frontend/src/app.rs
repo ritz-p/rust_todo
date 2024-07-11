@@ -14,11 +14,6 @@ extern "C" {
     async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 }
 
-#[derive(Serialize, Deserialize)]
-struct GreetArgs<'a> {
-    name: &'a str,
-}
-
 #[function_component(App)]
 pub fn app() -> Html {
     // let counter = use_state(|| 0);
@@ -39,7 +34,7 @@ pub fn app() -> Html {
 
     html! {
         <div>
-            <button onclick={onclick_todo}>{ "Increment value" }</button>
+            <button onclick={onclick_todo}>{ "Add Todo" }</button>
             <p>
                 <b>{ "Current value: " }</b>
                 { for todo_list.iter().map(|todo| html!{
