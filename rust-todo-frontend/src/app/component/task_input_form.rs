@@ -31,7 +31,7 @@ impl Component for TaskInputForm {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-        let oninput_task_name = ctx.link().callback(|e: InputEvent|{
+        let oninput_task_name = ctx.link().callback(|e: InputEvent| {
             let input: HtmlInputElement = e.target_unchecked_into();
             Msg::UpdateTaskName(input.value())
         });

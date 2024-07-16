@@ -23,7 +23,6 @@ extern "C" {
 
 #[function_component(App)]
 pub fn app() -> Html {
-
     let todo_list = use_state(|| Vec::<Todo>::new());
     let onclick_todo = {
         let todo_list = todo_list.clone();
@@ -64,9 +63,13 @@ struct Todo {
 }
 
 fn get_value_by_id(id: &str) -> String {
-    window().unwrap()
-    .document().unwrap()
-    .get_element_by_id(id).unwrap()
-    .dyn_ref::<HtmlInputElement>().unwrap()
-    .value()
+    window()
+        .unwrap()
+        .document()
+        .unwrap()
+        .get_element_by_id(id)
+        .unwrap()
+        .dyn_ref::<HtmlInputElement>()
+        .unwrap()
+        .value()
 }
