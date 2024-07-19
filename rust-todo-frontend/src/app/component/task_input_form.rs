@@ -49,7 +49,6 @@ impl Component for TaskInputForm {
                         oninput={oninput_task_name}
                     />
                 </div>
-                <button type="submit">{"Submit"}</button>
             </form>
         }
     }
