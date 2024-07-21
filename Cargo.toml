@@ -1,7 +1,7 @@
 [workspace]
 members = [
-    "rust-todo-backend",
-    "rust-todo-frontend"
+    "backend",
+    "frontend"
 ]
 
 resolver = "2"
@@ -34,4 +34,3 @@ web-sys = "0.3"
 js-sys = "0.3"
 serde-wasm-bindgen = "0.6"
 console_error_panic_hook = "0.1.7"
-stylist = "0.13.0"
