@@ -1,7 +1,7 @@
-use crate::component::{text_input_form::TextInputForm,todo_list::TodoList};
+use crate::component::{text_input_form::TextInputForm, todo_list::TodoList};
+use shared_struct::structs::Todo;
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
-use shared_struct::structs::Todo;
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "tauri"])]

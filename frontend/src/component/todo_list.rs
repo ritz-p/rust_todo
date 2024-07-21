@@ -1,11 +1,11 @@
 use crate::props::todo_list_props::TodoListProps;
 use patternfly_yew::components::{
-        page::{PageSection,PageSectionGroup},
-        list::{List,ListType,ListItem}
-    };
+    list::{List, ListItem, ListType},
+    page::{PageSection, PageSectionGroup},
+};
 use yew::prelude::*;
 #[function_component]
-pub fn TodoList(props: &TodoListProps) -> Html{
+pub fn TodoList(props: &TodoListProps) -> Html {
     let todo_list = props.todo_list.clone();
 
     html!(
