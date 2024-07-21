@@ -3,7 +3,7 @@ use patternfly_yew::{
     components::{
         button::Button,
         form::{ActionGroup, Form, FormGroup},
-        page::{PageSection,PageSectionGroup}
+        page::{PageSection, PageSectionGroup},
     },
     prelude::*,
 };
@@ -21,7 +21,7 @@ pub fn TextInputForm(props: &TextInputFormProps) -> Html {
         let text_input = text_input.clone();
         let onsubmit = props.onsubmit.clone();
         Callback::from(move |e: SubmitEvent| {
-            e.prevent_default(); 
+            e.prevent_default();
             onsubmit.emit((*text_input).clone());
             text_input.set(String::new());
         })
