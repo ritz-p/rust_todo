@@ -1,5 +1,6 @@
 mod app;
-
+mod component;
+mod props;
 use app::App;
 
 fn main() {

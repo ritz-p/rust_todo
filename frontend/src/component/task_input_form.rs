@@ -1,6 +1,10 @@
+use patternfly_yew::components::{
+    form::{Form, FormGroup},
+    text_input_group::TextInputGroup,
+};
+use patternfly_yew::prelude::*;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
-
 pub struct TaskInputForm {
     task_name: String,
 }
@@ -35,6 +39,7 @@ impl Component for TaskInputForm {
             let input: HtmlInputElement = e.target_unchecked_into();
             Msg::UpdateTaskName(input.value())
         });
+
         html! {
             <form onsubmit={ctx.link().callback(|e: SubmitEvent| {
                 e.prevent_default();

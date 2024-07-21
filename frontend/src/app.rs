@@ -1,20 +1,7 @@
-use std::{
-    borrow::{Borrow, BorrowMut},
-    cell::RefCell,
-    rc::Rc,
-};
-
-use js_sys::JSON::parse;
-use serde::{Deserialize, Serialize};
-use serde_wasm_bindgen::to_value;
+use crate::component::{text_input_form::TextInputForm,todo_list::TodoList};
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
-use wasm_bindgen_futures::spawn_local;
-use web_sys::{window, HtmlInputElement};
 use yew::prelude::*;
-
-mod component;
-use component::task_input_form;
+use shared_struct::structs::Todo;
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "tauri"])]
@@ -26,9 +13,8 @@ pub fn app() -> Html {
     let todo_list = use_state(|| Vec::<Todo>::new());
     let onclick_todo = {
         let todo_list = todo_list.clone();
-        Callback::from(move |_| {
+        Callback::from(move |task_name: String| {
             let id = todo_list.len() + 1;
-            let task_name = get_value_by_id("task_name").parse().unwrap();
             let mut todos = (*todo_list).clone();
             todos.push(Todo {
                 id,
@@ -40,36 +26,9 @@ pub fn app() -> Html {
     };
 
     html! {
-        <div>
-            <task_input_form::TaskInputForm/>
-            <button onclick={onclick_todo}>{ "Add Todo" }</button>
-            <p>
-                <b>{ "Current value: " }</b>
-                { for todo_list.iter().map(|todo| html!{
-                    <li key={todo.id}>
-                        {format!("{}. {}",&todo.id,&todo.text)}
-                    </li>
-                }) }
-            </p>
-        </div>
+        <>
+            <TextInputForm form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_lable="Reset" onsubmit={onclick_todo}/>
+            <TodoList todo_list={todo_list}/>
+        </>
     }
-}
-
-#[derive(Clone, PartialEq)]
-struct Todo {
-    id: usize,
-    text: String,
-    completed: bool,
-}
-
-fn get_value_by_id(id: &str) -> String {
-    window()
-        .unwrap()
-        .document()
-        .unwrap()
-        .get_element_by_id(id)
-        .unwrap()
-        .dyn_ref::<HtmlInputElement>()
-        .unwrap()
-        .value()
 }
