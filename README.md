@@ -4,3 +4,42 @@
 - impl<T,S> FromRequest<S> for ValidateJson<T>
     - from_request の引数が req だけでなく state も必要になった
     - fron_request 追っていったら state 使ってなくて草
+
+# How to build
+## 1. Environment
+1. Build the Docker image and container in WSL with command below
+```
+docker-compose up -d --build
+```
+2. Enter container with command below
+```
+docker exec -it rust_todo bash
+```
+
+## 2. Backend
+1. build the backend server with commands below
+```
+cargo make db_create
+cargo make migrate
+cargo make back
+```
+
+## 3. Frontend
+1. build the frontend app on browser with commands below
+```
+cd frontend
+yarn install(first time only)
+trunk serve
+```
+2. build the frontend app on tauri with commands below
+```
+cd frontend
+yarn install(first time only)
+tauri dev
+```
+3. build the standalone frontend app on tauri with commands below
+```
+cd frontend
+yarn install(first time only)
+tauri build
+```
