@@ -1,4 +1,3 @@
-use crate::repositories::{CreateTodo, TodoRepository, UpdateTodo};
 use axum::{
     async_trait,
     extract::{rejection::JsonRejection, Extension, FromRequest, Path, Request},
@@ -7,6 +6,7 @@ use axum::{
     Json,
 };
 use serde::de::DeserializeOwned;
+use shared_struct::todo::{repository::TodoRepository, CreateTodo, UpdateTodo};
 use std::sync::Arc;
 use validator::Validate;
 

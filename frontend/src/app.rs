@@ -1,5 +1,5 @@
 use crate::component::{text_input_form::TextInputForm, todo_list::TodoList};
-use shared_struct::structs::Todo;
+use shared_struct::todo::Todo;
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 #[wasm_bindgen]
@@ -14,7 +14,7 @@ pub fn app() -> Html {
     let onclick_todo = {
         let todo_list = todo_list.clone();
         Callback::from(move |task_name: String| {
-            let id = todo_list.len() + 1;
+            let id = (todo_list.len() + 1) as i32;
             let mut todos = (*todo_list).clone();
             todos.push(Todo {
                 id,
