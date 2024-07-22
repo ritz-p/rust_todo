@@ -84,7 +84,7 @@ mod test {
         response::Response,
     };
     use http_body_util::BodyExt;
-    use shared_struct::todo::{CreateTodo,Todo};
+    use shared_struct::todo::{CreateTodo, Todo};
     use tower::ServiceExt;
 
     fn build_todo_req_with_json(path: &str, method: Method, json_body: String) -> Request<Body> {

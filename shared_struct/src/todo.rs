@@ -25,16 +25,18 @@ pub struct UpdateTodo {
     pub completed: Option<bool>,
 }
 
-impl Todo{
-    pub fn new(id: i32,text: String) -> Self{
-        Self { id, text, completed: false }
+impl Todo {
+    pub fn new(id: i32, text: String) -> Self {
+        Self {
+            id,
+            text,
+            completed: false,
+        }
     }
 }
 
-impl CreateTodo{
-    pub fn new(text: String) -> Self{
-        Self{
-            text
-        }
+impl CreateTodo {
+    pub fn new(text: String) -> Self {
+        Self { text }
     }
 }
