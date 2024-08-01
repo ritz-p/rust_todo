@@ -4,8 +4,8 @@ use patternfly_yew::components::{
     page::{PageSection, PageSectionGroup},
 };
 
-use wasm_bindgen_futures::spawn_local;
 use gloo::console;
+use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 #[function_component]
 pub fn TodoList(props: &TodoListProps) -> Html {
