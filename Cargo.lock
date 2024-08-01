@@ -3489,6 +3489,7 @@ name = "rust-todo-frontend-ui"
 version = "0.0.0"
 dependencies = [
  "console_error_panic_hook",
+ "gloo 0.11.0",
  "js-sys",
  "patternfly-yew",
  "reqwest",

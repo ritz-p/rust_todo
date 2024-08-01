@@ -17,3 +17,4 @@ rust-todo-frontend = { path = "./src-tauri" }
 patternfly-yew = { workspace = true }
 shared_struct = { workspace = true }
 reqwest = { workspace = true }
+gloo = { workspace = true }

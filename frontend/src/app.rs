@@ -28,7 +28,7 @@ pub fn app() -> Html {
     html! {
         <>
             <TextInputForm form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_lable="Reset" onsubmit={onclick_todo}/>
-            <TodoList todo_list={todo_list}/>
+            <TodoList todo_list={todo_list} endpoint="http://localhost:8080/todos"/>
         </>
     }
 }
