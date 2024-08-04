@@ -35,11 +35,11 @@ trunk serve
 ```
 cd frontend
 yarn install(first time only)
-tauri dev
+cargo tauri dev
 ```
 3. build the standalone frontend app on tauri with commands below
 ```
 cd frontend
 yarn install(first time only)
-tauri build
+cargo tauri build
 ```
