@@ -11,6 +11,7 @@ wasm-bindgen-futures = { workspace = true }
 web-sys = { workspace = true }
 js-sys = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 serde-wasm-bindgen = { workspace = true }
 console_error_panic_hook = { workspace = true }
 rust-todo-frontend = { path = "./src-tauri" }
@@ -18,3 +19,5 @@ patternfly-yew = { workspace = true }
 shared_struct = { workspace = true }
 reqwest = { workspace = true }
 gloo = { workspace = true }
+log = { workspace = true }
+console_log = { workspace = true }

@@ -4,34 +4,38 @@ use patternfly_yew::components::{
     page::{PageSection, PageSectionGroup},
 };
 
-use gloo::console;
+use reqwest::Client;
+use shared_struct::todo::mount::object::todo::Todo;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
+use log::error;
 #[function_component]
 pub fn TodoList(props: &TodoListProps) -> Html {
-    let todo_list = use_state(|| props.todo_list.clone());
+    let todo_list = props.todo_list.clone();
     let endpoint = props.endpoint.clone();
-    let response_data = use_state(|| "response".to_string());
-    let send = {
-        let response_data = response_data.clone();
-        move || {
-            let response_data = response_data.clone();
-            console::log!("send");
+    {
+        let todo_list = todo_list.clone();
+        use_effect(move || {
             spawn_local(async move {
-                let client = reqwest::Client::new();
-                let req = client
-                    .get(endpoint)
-                    .send()
-                    .await
-                    .expect("failed to send request");
-
-                console::log!(format!("headers: {:?}", req.headers()));
-
-                let data = req.text().await.expect("failed to get response");
-
-                response_data.set(format!("{:?}", data));
-            });
-        }
+                let client = Client::new();
+                let response = client.get(&endpoint).send().await;
+                match response{
+                    Ok(data) => {
+                        let text = data.text().await;
+                        match text{
+                            Ok(json) => {
+                                match serde_json::from_str::<Vec<Todo>>(&json){
+                                    Ok(todo_list_json) => todo_list.set(todo_list_json),
+                                    Err(err) => error!("Error parsing todo list: {:?}",err)
+                                }
+                            },
+                            Err(err) => error!("Error fetching text:{:?}",err)
+                        }
+                    }
+                    Err(err) => error!("Error fetching data:{:?}",err)
+                }
+            })
+        });
     };
     html!(
         <PageSectionGroup>

@@ -37,3 +37,5 @@ console_error_panic_hook = "0.1.7"
 patternfly-yew = "0.6.2"
 shared_struct = { path = "shared_struct" }
 reqwest = "0.12.5"
+log = "0.4.22"
+console_log = "1.0.0"
