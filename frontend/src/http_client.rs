@@ -1,5 +1,5 @@
-use tauri_plugin_http::Error;
 use tauri_plugin_http::reqwest;
+use tauri_plugin_http::Error;
 pub struct HttpClient {
     base_url: String,
 }
