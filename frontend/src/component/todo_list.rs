@@ -1,5 +1,5 @@
-use crate::props::todo_list_props::TodoListProps;
 use crate::http_client::HttpClient;
+use crate::props::todo_list_props::TodoListProps;
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
@@ -17,16 +17,14 @@ pub fn TodoList(props: &TodoListProps) -> Html {
     let http_client = HttpClient::new("http://localhost:8080");
     {
         let todo_list = todo_list.clone();
-        use_effect_with(true,move |_| {
-            spawn_local(async move{
+        use_effect_with(true, move |_| {
+            spawn_local(async move {
                 let response = http_client.get(&endpoint).await;
                 match response {
-                    Ok(text) => {
-                        match serde_json::from_str::<Vec<Todo>>(&text) {
-                            Ok(todo_list_json) => todo_list.set(todo_list_json),
-                            Err(err) => error!("Error parsing todo list: {:?}", err),
-                        }
-                    }
+                    Ok(text) => match serde_json::from_str::<Vec<Todo>>(&text) {
+                        Ok(todo_list_json) => todo_list.set(todo_list_json),
+                        Err(err) => error!("Error parsing todo list: {:?}", err),
+                    },
                     Err(err) => error!("Error fetching data:{:?}", err),
                 }
             })
