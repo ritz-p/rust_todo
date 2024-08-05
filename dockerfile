@@ -8,8 +8,7 @@ RUN apt update && \
 
 RUN rustup component add rls rust-analysis rust-src rustfmt clippy && \
     cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli trunk && \
-    rustup install nightly && \
-    rustup target add wasm32-unknown-unknown
+    rustup install nightly
 RUN cargo install create-tauri-app --locked
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -17,7 +16,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update && apt-get install -y yarn
-
+RUN rustup target add wasm32-unknown-unknown
 WORKDIR /workspace
 ENV USER=root
 ENV RUST_BACKTRACE=1
