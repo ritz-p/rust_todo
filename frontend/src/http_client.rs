@@ -1,5 +1,5 @@
-use gloo::net::Error;
 use gloo::net::http::Request;
+use gloo::net::Error;
 pub struct HttpClient {
     base_url: String,
 }
