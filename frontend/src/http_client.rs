@@ -1,5 +1,5 @@
-use tauri_plugin_http::Error;
 use tauri_plugin_http::reqwest;
+use tauri_plugin_http::Error;
 pub struct HttpClient {
     base_url: String,
 }
@@ -13,7 +13,7 @@ impl HttpClient {
 
     pub async fn get(&self, endpoint: &str) -> Result<String, Error> {
         let url = format!("{}/{}", self.base_url, endpoint);
-        let response = reqwest::get(&url).send().await?.text().await?;
+        let response = reqwest::get(&url).await?.text().await?;
         Ok(response)
     }
 }

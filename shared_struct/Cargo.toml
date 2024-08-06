@@ -9,6 +9,5 @@ serde_json = { workspace = true }
 sqlx = { workspace = true }
 validator = { workspace = true }
 anyhow = { workspace = true }
-tokio = { workspace = true }
 thiserror = { workspace = true }
 axum = { workspace = true }
