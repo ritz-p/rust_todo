@@ -35,6 +35,12 @@ dependencies = ["format"]
 command = "echo"
 args = ["${CARGO_MAKE_WORKING_DIRECTORY}"]
 
+[tasks.trunk-clean]
+command = "trunk"
+args = ["clean"]
+
 [tasks.clean]
+dependencies = ["trunk-clean"]
 command = "cargo"
 args = ["clean"]
+
