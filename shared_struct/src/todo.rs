@@ -1,7 +1,6 @@
+use self::mount::object::{create_todo::CreateTodo, todo::Todo};
 pub mod error;
 pub mod mount;
-
-use mount::object::{create_todo::CreateTodo, todo::Todo};
 
 impl Todo {
     pub fn new(id: i32, text: String) -> Self {

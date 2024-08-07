@@ -6,8 +6,9 @@ RUN apt update && \
     file libssl-dev libxdo-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev \
     x11-apps gnupg ca-certificates
 
+COPY rust-toolchain.toml .
 RUN rustup component add rls rust-analysis rust-src rustfmt clippy && \
-    cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli@^2.0.0-rc create-tauri-app && \
+    cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli create-tauri-app && \
     rustup install nightly
 RUN cargo install trunk --locked
 

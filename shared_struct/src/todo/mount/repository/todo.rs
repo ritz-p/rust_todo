@@ -1,7 +1,7 @@
 use anyhow::Result;
-use axum::async_trait;
 
-#[async_trait]
+#[cfg(feature = "back")]
+#[axum::async_trait]
 pub trait TodoRepository<Todo, CreateTodo, UpdateTodo>: Clone + Send + Sync + 'static {
     async fn create(&self, payload: CreateTodo) -> Result<Todo>;
     async fn find(&self, id: i32) -> Result<Todo>;

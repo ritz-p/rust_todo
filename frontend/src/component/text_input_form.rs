@@ -8,6 +8,7 @@ use patternfly_yew::{
     prelude::*,
 };
 use yew::prelude::*;
+
 #[function_component]
 pub fn TextInputForm(props: &TextInputFormProps) -> Html {
     let text_input = use_state_eq(|| props.text_input.clone());

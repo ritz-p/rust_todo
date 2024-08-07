@@ -1,19 +1,19 @@
-use tauri_plugin_http::reqwest;
-use tauri_plugin_http::Error;
-pub struct HttpClient {
-    base_url: String,
-}
+// use tauri::http::Request;
 
-impl HttpClient {
-    pub fn new(base_url: &str) -> Self {
-        HttpClient {
-            base_url: base_url.to_string(),
-        }
-    }
+// pub struct HttpClient {
+//     base_url: String,
+// }
 
-    pub async fn get(&self, endpoint: &str) -> Result<String, Error> {
-        let url = format!("{}/{}", self.base_url, endpoint);
-        let response = reqwest::get(&url).await?.text().await?;
-        Ok(response)
-    }
-}
+// impl HttpClient {
+//     pub fn new(base_url: &str) -> Self {
+//         HttpClient {
+//             base_url: base_url.to_string(),
+//         }
+//     }
+
+//     pub async fn get(&self, endpoint: &str) -> Result<String, Error> {
+//         let url = format!("{}/{}", self.base_url, endpoint);
+//         let response = Request::get(&url).await?.text().await?;
+//         Ok(response)
+//     }
+// }

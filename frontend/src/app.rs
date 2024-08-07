@@ -1,8 +1,5 @@
-use crate::{
-    component::{text_input_form::TextInputForm, todo_list::TodoList},
-    props::todo_list_props::Todo,
-};
-// use shared_struct::todo::mount::object::todo::Todo;
+use crate::component::{text_input_form::TextInputForm, todo_list::TodoList};
+use shared_struct::todo::mount::object::todo::Todo;
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 #[wasm_bindgen]

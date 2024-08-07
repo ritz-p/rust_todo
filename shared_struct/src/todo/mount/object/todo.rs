@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
-use sqlx::prelude::FromRow;
 
-#[derive(Clone, PartialEq, Debug, Serialize, Deserialize, Eq, FromRow)]
+#[cfg_attr(feature = "back", derive(sqlx::prelude::FromRow))]
+#[derive(Clone, PartialEq, Debug, Serialize, Deserialize, Eq)]
 pub struct Todo {
     pub id: i32,
     pub text: String,

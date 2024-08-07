@@ -16,8 +16,4 @@ serde-wasm-bindgen = { workspace = true }
 console_error_panic_hook = { workspace = true }
 rust-todo-frontend = { path = "./src-tauri" }
 patternfly-yew = { workspace = true }
-shared_struct = { workspace = true }
-gloo = { workspace = true }
-log = { workspace = true }
-console_log = { workspace = true }
-tauri-plugin-http = { workspace = true }
+shared_struct = { path = "../shared_struct" }
