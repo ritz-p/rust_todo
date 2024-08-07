@@ -17,8 +17,9 @@ args = ["fmt"]
 
 [tasks.back]
 command = "cargo"
-args = ["watch","-x","run","-C","rust-todo-backend"]
+args = ["watch","-x","run","-C","backend"]
 dependencies = ["format"]
+cwd = "/workspace"
 
 [tasks.back_test]
 command = "cargo"

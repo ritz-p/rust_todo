@@ -1,46 +1,9 @@
 use anyhow::Result;
 use axum::async_trait;
-use serde::{Deserialize, Serialize};
-use sqlx::{prelude::FromRow, PgPool};
-use thiserror::Error;
-use validator::Validate;
-
-#[derive(Debug, Error)]
-enum RepositoryError {
-    #[error("Unexpected Error: [{0}]")]
-    Unexpected(String),
-    #[error("NotFound, id is {0}")]
-    NotFound(i32),
-}
-
-#[async_trait]
-pub trait TodoRepository: Clone + Send + Sync + 'static {
-    async fn create(&self, payload: CreateTodo) -> Result<Todo>;
-    async fn find(&self, id: i32) -> Result<Todo>;
-    async fn all(&self) -> Result<Vec<Todo>>;
-    async fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo>;
-    async fn delete(&self, id: i32) -> Result<()>;
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, FromRow)]
-pub struct Todo {
-    id: i32,
-    text: String,
-    completed: bool,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Validate)]
-pub struct CreateTodo {
-    #[validate(length(min = 1, max = 100, message = "text must be between 1 ~ 100"))]
-    text: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Validate)]
-pub struct UpdateTodo {
-    #[validate(length(min = 1, max = 100, message = "text must be between 1 ~ 100"))]
-    text: Option<String>,
-    completed: Option<bool>,
-}
+use shared_struct::todo::{
+    error::RepositoryError, repository::TodoRepository, CreateTodo, Todo, UpdateTodo,
+};
+use sqlx::PgPool;
 
 #[derive(Debug, Clone)]
 pub struct TodoRepositoryForDb {
@@ -199,22 +162,6 @@ pub mod test_utils {
         collections::HashMap,
         sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
     };
-
-    impl Todo {
-        pub fn new(id: i32, text: String) -> Self {
-            Self {
-                id,
-                text,
-                completed: false,
-            }
-        }
-    }
-
-    impl CreateTodo {
-        pub fn new(text: String) -> Self {
-            Self { text }
-        }
-    }
 
     type TodoDataMap = HashMap<i32, Todo>;
 

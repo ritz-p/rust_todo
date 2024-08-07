@@ -1,17 +1,17 @@
 mod handlers;
 mod repositories;
 
-use crate::repositories::{TodoRepository, TodoRepositoryForDb};
+use crate::repositories::TodoRepositoryForDb;
 use axum::{
     routing::{get, post},
     Extension, Router,
 };
 use dotenv::dotenv;
 use handlers::{all_todo, create_todo, delete_todo, find_todo, update_todo};
+use shared_struct::todo::repository::TodoRepository;
 use sqlx::PgPool;
 use std::{env, sync::Arc};
 use tokio::net::TcpListener;
-
 #[tokio::main]
 async fn main() {
     dotenv().ok();
@@ -77,13 +77,14 @@ async fn root() -> &'static str {
 mod test {
 
     use super::*;
-    use crate::repositories::{test_utils::TodoRepositoryForMemory, CreateTodo, Todo};
+    use crate::repositories::test_utils::TodoRepositoryForMemory;
     use axum::{
         body::Body,
         http::{header, Method, Request, StatusCode},
         response::Response,
     };
     use http_body_util::BodyExt;
+    use shared_struct::todo::{CreateTodo,Todo};
     use tower::ServiceExt;
 
     fn build_todo_req_with_json(path: &str, method: Method, json_body: String) -> Request<Body> {

@@ -1,6 +1,7 @@
 mod app;
 mod component;
 mod props;
+mod http_client;
 use app::App;
 
 fn main() {

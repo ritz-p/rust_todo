@@ -1,6 +1,6 @@
+use shared_struct::todo::Todo;
 use yew::prelude::*;
-use shared_struct::structs::Todo;
 #[derive(PartialEq, Properties)]
 pub struct TodoListProps {
-    pub todo_list: UseStateHandle<Vec<Todo>>
+    pub todo_list: UseStateHandle<Vec<Todo>>,
 }
