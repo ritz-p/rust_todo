@@ -4,9 +4,7 @@ use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
 };
-
-use log::error;
-// use shared_struct::todo::mount::object::todo::Todo;
+use shared_struct::todo::mount::object::todo::Todo;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 
