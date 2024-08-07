@@ -6,7 +6,10 @@ use axum::{
     Json,
 };
 use serde::de::DeserializeOwned;
-use shared_struct::todo::{repository::TodoRepository, CreateTodo, UpdateTodo};
+use shared_struct::todo::mount::{
+    object::{create_todo::CreateTodo, todo::Todo, update_todo::UpdateTodo},
+    repository::todo::TodoRepository,
+};
 use std::sync::Arc;
 use validator::Validate;
 
@@ -42,7 +45,7 @@ pub async fn create_todo<T>(
     Extension(repository): Extension<Arc<T>>,
 ) -> Result<impl IntoResponse, StatusCode>
 where
-    T: TodoRepository,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo>,
 {
     let todo = repository
         .create(payload)
@@ -57,7 +60,7 @@ pub async fn find_todo<T>(
     Extension(repository): Extension<Arc<T>>,
 ) -> Result<impl IntoResponse, StatusCode>
 where
-    T: TodoRepository,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo>,
 {
     let todo = repository.find(id).await.or(Err(StatusCode::NOT_FOUND))?;
     Ok((StatusCode::OK, Json(todo)))
@@ -67,7 +70,7 @@ pub async fn all_todo<T>(
     Extension(repository): Extension<Arc<T>>,
 ) -> Result<impl IntoResponse, StatusCode>
 where
-    T: TodoRepository,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo>,
 {
     let todo = repository.all().await.unwrap();
     Ok((StatusCode::OK, Json(todo)))
@@ -79,7 +82,7 @@ pub async fn update_todo<T>(
     Extension(repository): Extension<Arc<T>>,
 ) -> Result<impl IntoResponse, StatusCode>
 where
-    T: TodoRepository + Send + Sync + 'static,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo> + Send + Sync + 'static,
 {
     let todo = repository
         .update(id, payload)
@@ -93,7 +96,7 @@ pub async fn delete_todo<T>(
     Extension(repository): Extension<Arc<T>>,
 ) -> StatusCode
 where
-    T: TodoRepository,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo>,
 {
     repository
         .delete(id)

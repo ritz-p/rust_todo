@@ -8,7 +8,10 @@ use axum::{
 };
 use dotenv::dotenv;
 use handlers::{all_todo, create_todo, delete_todo, find_todo, update_todo};
-use shared_struct::todo::repository::TodoRepository;
+use shared_struct::todo::mount::{
+    object::{create_todo::CreateTodo, todo::Todo, update_todo::UpdateTodo},
+    repository::todo::TodoRepository,
+};
 use sqlx::PgPool;
 use std::{env, sync::Arc};
 use tokio::net::TcpListener;
@@ -19,8 +22,8 @@ async fn main() {
     env::set_var("RUST_LOG", log_level);
     tracing_subscriber::fmt::init();
 
-    let host = env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
-    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    let host = env::var("BACKEND_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+    let port = env::var("BACKEND_PORT").unwrap_or_else(|_| "8080".to_string());
     let address = format!("{}:{}", host, port);
 
     let db_user = env::var("DB_USER").expect("DB_USER undefined");
@@ -46,7 +49,7 @@ async fn main() {
 
 fn create_app<T>(repository: T) -> Router
 where
-    T: TodoRepository,
+    T: TodoRepository<Todo, CreateTodo, UpdateTodo>,
 {
     let repository = Arc::new(repository);
     Router::new()
@@ -84,7 +87,7 @@ mod test {
         response::Response,
     };
     use http_body_util::BodyExt;
-    use shared_struct::todo::{CreateTodo,Todo};
+    use shared_struct::todo::mount::object::{create_todo::CreateTodo, todo::Todo};
     use tower::ServiceExt;
 
     fn build_todo_req_with_json(path: &str, method: Method, json_body: String) -> Request<Body> {

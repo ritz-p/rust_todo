@@ -1,7 +1,9 @@
 use anyhow::Result;
 use axum::async_trait;
 use shared_struct::todo::{
-    error::RepositoryError, repository::TodoRepository, CreateTodo, Todo, UpdateTodo,
+    error::RepositoryError,
+    mount::object::{create_todo::CreateTodo, todo::Todo, update_todo::UpdateTodo},
+    mount::repository::todo::TodoRepository,
 };
 use sqlx::PgPool;
 
@@ -17,7 +19,7 @@ impl TodoRepositoryForDb {
 }
 
 #[async_trait]
-impl TodoRepository for TodoRepositoryForDb {
+impl TodoRepository<Todo, CreateTodo, UpdateTodo> for TodoRepositoryForDb {
     async fn create(&self, payload: CreateTodo) -> Result<Todo> {
         let todo = sqlx::query_as::<_, Todo>(
             r#"insert into todos (text, completed) values ($1,false) returning *"#,
@@ -187,7 +189,7 @@ pub mod test_utils {
     }
 
     #[async_trait]
-    impl TodoRepository for TodoRepositoryForMemory {
+    impl TodoRepository<Todo, CreateTodo, UpdateTodo> for TodoRepositoryForMemory {
         async fn create(&self, payload: CreateTodo) -> Result<Todo> {
             let mut store = self.write_store_ref();
             let id = (store.len() + 1) as i32;

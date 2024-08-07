@@ -1,9 +1,8 @@
-use crate::todo::{CreateTodo, Todo, UpdateTodo};
 use anyhow::Result;
 
 #[cfg(feature = "back")]
 #[axum::async_trait]
-pub trait TodoRepository: Clone + Send + Sync + 'static {
+pub trait TodoRepository<Todo, CreateTodo, UpdateTodo>: Clone + Send + Sync + 'static {
     async fn create(&self, payload: CreateTodo) -> Result<Todo>;
     async fn find(&self, id: i32) -> Result<Todo>;
     async fn all(&self) -> Result<Vec<Todo>>;
