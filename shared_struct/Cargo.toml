@@ -6,9 +6,12 @@ edition = "2021"
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
-sqlx = { workspace = true }
+sqlx = { workspace = true , optional = true}
 validator = { workspace = true }
 anyhow = { workspace = true }
-tokio = { workspace = true }
 thiserror = { workspace = true }
-axum = { workspace = true }
+axum = { workspace = true , optional = true}
+
+[features]
+default = []
+back = ["axum","sqlx"]

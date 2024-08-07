@@ -35,5 +35,4 @@ js-sys = "0.3"
 serde-wasm-bindgen = "0.6"
 console_error_panic_hook = "0.1.7"
 patternfly-yew = "0.6.2"
-shared_struct = { path = "shared_struct" }
 reqwest = "0.12.5"

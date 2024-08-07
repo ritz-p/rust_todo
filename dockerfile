@@ -6,11 +6,12 @@ RUN apt update && \
     file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev \
     x11-apps gnupg ca-certificates
 
+COPY rust-toolchain.toml .
 RUN rustup component add rls rust-analysis rust-src rustfmt clippy && \
-    cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli trunk && \
+    cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli && \
     rustup install nightly && \
     rustup target add wasm32-unknown-unknown
-RUN cargo install create-tauri-app --locked
+RUN cargo install create-tauri-app trunk --locked
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs

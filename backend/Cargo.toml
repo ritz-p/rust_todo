@@ -23,7 +23,7 @@ tower = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 validator = { workspace = true }
-shared_struct = { workspace = true }
+shared_struct = { path = "../shared_struct" , features = ["back"] }
 [features]
 default = ["database-test"]
 database-test = []
