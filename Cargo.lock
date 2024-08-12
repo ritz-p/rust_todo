@@ -3515,8 +3515,10 @@ version = "0.0.0"
 dependencies = [
  "serde",
  "serde_json",
+ "shared_struct",
  "tauri",
  "tauri-build",
+ "tauri-sys",
 ]
 
 [[package]]
@@ -4601,6 +4603,21 @@ dependencies = [
  "webview2-com",
  "windows 0.39.0",
  "wry",
+]
+
+[[package]]
+name = "tauri-sys"
+version = "0.1.0"
+source = "git+https://github.com/JonasKruckenberg/tauri-sys#4da2b003ba59a4c8a9e8aa9f2ccc56468785703d"
+dependencies = [
+ "js-sys",
+ "log",
+ "serde",
+ "serde-wasm-bindgen 0.6.5",
+ "serde_repr",
+ "thiserror",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
 ]
 
 [[package]]

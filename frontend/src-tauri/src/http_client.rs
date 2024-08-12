@@ -1,18 +1,20 @@
-use tauri::http::Request;
-pub struct HttpClient {
-    base_url: String,
-}
+use tauri::http::{Request, RequestBuilder, ResponseType};
+use shared_struct::todo::mount::object::todo::Todo;
+#[tauri::command]
+async fn fetch(url: String) -> Result<Vec<Todo>,String> {
+    let client = ClientBuilder::new().build().unwrap();
 
-impl HttpClient {
-    pub fn new(base_url: &str) -> Self {
-        HttpClient {
-            base_url: base_url.to_string(),
-        }
-    }
+    let request = RequestBuilder::new("GET", &url)
+        .response_type(ResponseType::Json)
+        .build()
+        .map_err(|e| e.to_string())?;
 
-    pub async fn get(&self, endpoint: &str) -> Result<String, Error> {
-        let url = format!("{}/{}", self.base_url, endpoint);
-        let response = Request::get(&url).await?.text().await?;
-        Ok(response)
-    }
+    let response = client.send(request).await.map_err(|e| e.to_string())?;
+
+
+    let data:Vec<Todo> = response
+        .body()
+        .map_err(|e| e.to_string())?;
+
+    Ok(data)
 }

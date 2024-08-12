@@ -14,7 +14,8 @@ tauri-build = { version = "1", features = [] }
 tauri = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-
+tauri-sys = { git = "https://github.com/JonasKruckenberg/tauri-sys" }
+shared_struct = { path = "../../shared_struct" }
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
