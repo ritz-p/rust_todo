@@ -3,27 +3,26 @@ use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
 };
+use serde_wasm_bindgen::from_value;
 use shared_struct::todo::mount::object::todo::Todo;
-use tauri_sys::tauri::invoke;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
+use wasm_bindgen::prelude::*;
 
 #[function_component]
 pub fn TodoList(props: &TodoListProps) -> Html {
-    let todo_list = props.todo_list.clone();
+    let todo_list = use_state(Vec::new);
     let endpoint = props.endpoint.clone();
     {
         let todo_list = todo_list.clone();
         use_effect_with(true, move |_| {
             spawn_local(async move {
-                let response =
-                    invoke::<Vec<Todo>>("fetch", serde_json::json!({"url": endpoint})).await;
-                match response {
-                    Ok(text) => match serde_json::from_str::<Vec<Todo>>(&text) {
-                        Ok(todo_list_json) => todo_list.set(todo_list_json),
-                        Err(err) => error!("Error parsing todo list: {:?}", err),
+                let response = get_todo_list().await;
+                match convert_js_value(response){
+                    Ok(new_todo_list) => {
+                        todo_list.set(new_todo_list);
                     },
-                    Err(err) => error!("Error fetching data:{:?}", err),
+                    Err(_) => todo!(),
                 }
             })
         });
@@ -41,4 +40,20 @@ pub fn TodoList(props: &TodoListProps) -> Html {
             </PageSection>
         </PageSectionGroup>
     )
+}
+
+#[wasm_bindgen(module = "/public/invoke.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = get_todo_list,catch)]
+    async fn get_todo_list() -> Result<JsValue,JsValue>;
+}
+
+fn convert_js_value(result: Result<JsValue, JsValue>) -> Result<Vec<Todo>, JsValue> {
+    match result {
+        Ok(js_value) => {
+            let todos: Vec<Todo> = serde_wasm_bindgen::from_value(js_value).map_err(|err| JsValue::from_str(&err.to_string()))?;
+            Ok(todos)
+        },
+        Err(err) => Err(err),
+    }
 }
