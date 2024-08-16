@@ -7,9 +7,9 @@ use patternfly_yew::components::{
 use serde::Serialize;
 use serde_wasm_bindgen::{from_value, to_value, Error};
 use shared_struct::todo::mount::object::todo::Todo;
+use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
-use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
@@ -61,6 +61,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
     )
 }
 
+<<<<<<< HEAD
 fn convert_js_value(result: JsValue) -> Result<Vec<Todo>,Error> {
     if result.is_object(){
         let todos: Vec<Todo> = serde_wasm_bindgen::from_value(result).map_err(|err| JsValue::from_str(&err.to_string()))?;
@@ -74,3 +75,21 @@ fn convert_js_value(result: JsValue) -> Result<Vec<Todo>,Error> {
 struct FetchArgs{
     url: String,
 }
+=======
+#[wasm_bindgen(module = "/public/invoke.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = get_todo_list,catch)]
+    async fn get_todo_list() -> Result<JsValue, JsValue>;
+}
+
+fn convert_js_value(result: Result<JsValue, JsValue>) -> Result<Vec<Todo>, JsValue> {
+    match result {
+        Ok(js_value) => {
+            let todos: Vec<Todo> = serde_wasm_bindgen::from_value(js_value)
+                .map_err(|err| JsValue::from_str(&err.to_string()))?;
+            Ok(todos)
+        }
+        Err(err) => Err(err),
+    }
+}
+>>>>>>> 533091ee7e53da252489ac411bf2e08a237ef312
