@@ -14,7 +14,7 @@ use yew::prelude::*;
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = ["window.__TAURI__.tauri"])]
-    async fn invoke(cmd: &str,args: JsValue) -> JsValue;
+    async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 }
 
 #[function_component]
@@ -26,22 +26,22 @@ pub fn TodoList(props: &TodoListProps) -> Html {
         let todo_list = todo_list.clone();
         use_effect_with(true, move |_| {
             spawn_local(async move {
-                let args = to_value(&FetchArgs{url});
-                match args{
+                let args = to_value(&FetchArgs { url });
+                match args {
                     Ok(serialized_args) => {
-                        let response = invoke(&function,serialized_args).await;
-                        match convert_js_value(response){
+                        let response = invoke(&function, serialized_args).await;
+                        match convert_js_value(response) {
                             Ok(new_todo_list) => {
                                 todo_list.set(new_todo_list);
-                            },
+                            }
                             Err(err) => {
-                                println!("{}",err);
-                            },
+                                println!("{}", err);
+                            }
                         }
-                    },
+                    }
                     Err(err) => {
-                        println!("{}",err);
-                    },
+                        println!("{}", err);
+                    }
                 }
             })
         });
@@ -61,16 +61,17 @@ pub fn TodoList(props: &TodoListProps) -> Html {
     )
 }
 
-fn convert_js_value(result: JsValue) -> Result<Vec<Todo>,Error> {
-    if result.is_object(){
-        let todos: Vec<Todo> = serde_wasm_bindgen::from_value(result).map_err(|err| JsValue::from_str(&err.to_string()))?;
+fn convert_js_value(result: JsValue) -> Result<Vec<Todo>, Error> {
+    if result.is_object() {
+        let todos: Vec<Todo> = serde_wasm_bindgen::from_value(result)
+            .map_err(|err| JsValue::from_str(&err.to_string()))?;
         Ok(todos)
-    }else{
+    } else {
         Err(result.into())
     }
 }
 
 #[derive(Serialize)]
-struct FetchArgs{
+struct FetchArgs {
     url: String,
 }
