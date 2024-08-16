@@ -10,6 +10,7 @@ extern "C" {
 
 #[function_component(App)]
 pub fn app() -> Html {
+    let url = "http://localhost:8080/todos";
     let todo_list = use_state(|| Vec::<Todo>::new());
     let onclick_todo = {
         // let todo_list = todo_list.clone();
@@ -28,7 +29,7 @@ pub fn app() -> Html {
     html! {
         <>
             <TextInputForm form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_lable="Reset" onsubmit={onclick_todo}/>
-            <TodoList todo_list={todo_list} endpoint="http://localhost:8080/todos"/>
+            <TodoList todo_list={todo_list} function="fetch" url={url}/>
         </>
     }
 }
