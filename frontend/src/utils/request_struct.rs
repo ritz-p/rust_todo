@@ -1,4 +1,4 @@
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{de::DeserializeOwned, Serialize, Serializer};
 use serde_wasm_bindgen::{to_value, Error};
 use wasm_bindgen::JsValue;
 
@@ -13,7 +13,7 @@ where
     T: DeserializeOwned,
 {
     pub url: String,
-    pub request: T,
+    pub todo: T,
 }
 
 impl FetchArgs {
@@ -26,8 +26,8 @@ impl<T> PostArgs<T>
 where
     T: DeserializeOwned,
 {
-    pub fn new(url: String, request: T) -> Self {
-        Self { url, request }
+    pub fn new(url: String, todo: T) -> Self {
+        Self { url, todo }
     }
 }
 
@@ -42,7 +42,7 @@ where
     T: DeserializeOwned + Serialize,
 {
     fn url_to_js_value(self, _key: String) -> Result<JsValue, Error> {
-        to_value(&PostArgs::new(self.url, self.request))
+        to_value(&PostArgs::new(self.url, self.todo))
     }
 }
 
