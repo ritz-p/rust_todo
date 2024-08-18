@@ -1,6 +1,7 @@
 pub mod app;
 pub mod component;
 pub mod props;
+pub mod utils;
 
 use app::App;
 fn main() {
