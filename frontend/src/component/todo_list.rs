@@ -1,6 +1,6 @@
 use crate::utils::request_struct::FetchArgsToJsValue;
+use crate::utils::{js_bind::FromJsValue, wasm::invoke};
 use crate::{props::todo_list_props::TodoListProps, utils::request_struct::FetchArgs};
-use crate::utils::{wasm::invoke,js_bind::FromJsValue};
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
@@ -22,7 +22,8 @@ pub fn TodoList(props: &TodoListProps) -> Html {
                 let args = FetchArgs::url_to_js_value(url);
                 match args {
                     Ok(serialized_args) => {
-                        let response: Result<Vec<Todo>,Error> = FromJsValue::from_js_value(invoke(&function, serialized_args).await);
+                        let response: Result<Vec<Todo>, Error> =
+                            FromJsValue::from_js_value(invoke(&function, serialized_args).await);
                         match response {
                             Ok(new_todo_list) => {
                                 todo_list.set(new_todo_list);
@@ -53,6 +54,3 @@ pub fn TodoList(props: &TodoListProps) -> Html {
         </PageSectionGroup>
     )
 }
-
-
-

@@ -6,9 +6,7 @@ use yew::prelude::*;
 pub fn app() -> Html {
     let url = "http://localhost:8080/todos";
     let todo_list = use_state(|| Vec::<Todo>::new());
-    let onclick_todo = {
-        Callback::from(move |_: String| {})
-    };
+    let onclick_todo = { Callback::from(move |_: String| {}) };
 
     html! {
         <>
