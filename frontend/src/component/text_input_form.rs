@@ -1,7 +1,7 @@
 use crate::utils::js_bind::FromJsValue;
-use crate::utils::request_struct::{PostArgsToJsValue};
-use crate::{props::task_input_form_props::TextInputFormProps, utils::request_struct::PostArgs};
+use crate::utils::request_struct::PostArgsToJsValue;
 use crate::utils::wasm::invoke;
+use crate::{props::task_input_form_props::TextInputFormProps, utils::request_struct::PostArgs};
 
 use patternfly_yew::{
     components::{
@@ -33,13 +33,14 @@ pub fn TextInputForm(props: &TextInputFormProps) -> Html {
             e.prevent_default();
             onsubmit.emit((*text_input).clone());
             let new_todo = CreateTodo::new((*text_input).clone());
-            let args = PostArgs::url_to_js_value(PostArgs::new(url.clone(),new_todo),"todo".to_string());
+            let args =
+                PostArgs::url_to_js_value(PostArgs::new(url.clone(), new_todo), "todo".to_string());
             let function = function.clone();
-            spawn_local(async move{
-                match args{
+            spawn_local(async move {
+                match args {
                     Ok(serialized_args) => {
-                        invoke(&function,serialized_args).await;
-                    },
+                        invoke(&function, serialized_args).await;
+                    }
                     Err(_) => todo!(),
                 }
             })
