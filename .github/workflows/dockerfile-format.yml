@@ -1,0 +1,38 @@
+name: Format and Merge
+
+on:
+  push:
+    branch: master
+    paths: ['Dockerfile']
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Install Hadolint
+        run: |
+          wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+          chmod +x /bin/hadolint
+
+    - name: Lint Dockerfile
+        run: |
+          hadolint Dockerfile
+
+    - name: create pull request
+      id: pr
+      uses: peter-evans/create-pull-request@v6
+      with:
+        commit-message: 'fix: format Dockerfile'
+        title: Auto format .rs files
+        branch: fmt/dockerfile
+
+    - name: push output
+      run: |
+          echo "pr_number=${{ steps.pr.outputs.pull-request-number }}" >> $GITHUB_ENV
