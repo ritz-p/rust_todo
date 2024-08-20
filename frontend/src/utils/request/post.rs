@@ -11,7 +11,7 @@ where
     pub body: T,
 }
 pub trait PostArgsToJsValue<T> {
-    fn url_to_js_value(url: String,body: T) -> Result<JsValue, Error>
+    fn url_to_js_value(url: String, body: T) -> Result<JsValue, Error>
     where
         T: DeserializeOwned;
 }
@@ -29,7 +29,7 @@ impl<T> PostArgsToJsValue<T> for PostArgs<T>
 where
     T: Serialize + DeserializeOwned,
 {
-    fn url_to_js_value(url: String,body: T) -> Result<JsValue, Error> {
-        to_value(&PostArgs::new(url,body))
+    fn url_to_js_value(url: String, body: T) -> Result<JsValue, Error> {
+        to_value(&PostArgs::new(url, body))
     }
 }

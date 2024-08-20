@@ -1,5 +1,8 @@
 use crate::utils::wasm::invoke;
-use crate::{props::task_input_form_props::TextInputFormProps, utils::request::post::{PostArgs,PostArgsToJsValue}};
+use crate::{
+    props::task_input_form_props::TextInputFormProps,
+    utils::request::post::{PostArgs, PostArgsToJsValue},
+};
 
 use patternfly_yew::{
     components::{
@@ -12,7 +15,7 @@ use patternfly_yew::{
 use shared_struct::todo::mount::object::create_todo::CreateTodo;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::spawn_local;
-use web_sys::{console,window};
+use web_sys::{console, window};
 use yew::prelude::*;
 
 #[function_component]
@@ -33,29 +36,28 @@ pub fn TextInputForm(props: &TextInputFormProps) -> Html {
             e.prevent_default();
             onsubmit.emit((*text_input).clone());
             let new_todo = CreateTodo::new((*text_input).clone());
-            let args =  
-                PostArgs::url_to_js_value(url.clone(), new_todo);
+            let args = PostArgs::url_to_js_value(url.clone(), new_todo);
             let function = function.clone();
             spawn_local(async move {
                 match args {
                     Ok(serialized_args) => {
                         console::log_1(&serialized_args);
                         invoke(&function, serialized_args).await;
-                        if let Some(window) = window(){
+                        if let Some(window) = window() {
                             let reload = window.location().reload();
-                            match reload{
+                            match reload {
                                 Ok(_) => {
                                     console::log_1(&JsValue::from_str("Reload Succeeded"));
-                                },
+                                }
                                 Err(err) => {
                                     console::error_1(&err);
-                                },
+                                }
                             }
                         }
                     }
                     Err(err) => {
                         console::error_1(&err.into());
-                    },
+                    }
                 }
             })
         })

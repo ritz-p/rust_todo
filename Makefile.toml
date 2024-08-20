@@ -13,7 +13,7 @@ cwd = "/workspace"
 
 [tasks.format]
 command = "cargo"
-args = ["fmt"]
+args = ["+nightly","fmt"]
 
 [tasks.back]
 command = "cargo"
