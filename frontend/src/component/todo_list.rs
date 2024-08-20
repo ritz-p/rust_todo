@@ -8,6 +8,7 @@ use patternfly_yew::components::{
 use serde_wasm_bindgen::Error;
 use shared_struct::todo::mount::object::todo::Todo;
 use wasm_bindgen_futures::spawn_local;
+use web_sys::console;
 use yew::prelude::*;
 
 #[function_component]
@@ -22,6 +23,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
                 let args = FetchArgs::url_to_js_value(url);
                 match args {
                     Ok(serialized_args) => {
+                        console::log_1(&serialized_args);
                         let response: Result<Vec<Todo>, Error> =
                             FromJsValue::from_js_value(invoke(&function, serialized_args).await);
                         match response {

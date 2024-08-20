@@ -1,4 +1,4 @@
-use serde::{de::DeserializeOwned, Serialize, Serializer};
+use serde::{de::DeserializeOwned, Serialize};
 use serde_wasm_bindgen::{to_value, Error};
 use wasm_bindgen::JsValue;
 
@@ -10,10 +10,20 @@ pub struct FetchArgs {
 #[derive(Serialize)]
 pub struct PostArgs<T>
 where
-    T: DeserializeOwned,
+    T: Serialize + DeserializeOwned,
 {
     pub url: String,
-    pub todo: T,
+    pub body: T,
+}
+
+pub trait FetchArgsToJsValue {
+    fn url_to_js_value(url: String) -> Result<JsValue, Error>;
+}
+
+pub trait PostArgsToJsValue<T> {
+    fn url_to_js_value(url: String,body: T) -> Result<JsValue, Error>
+    where
+        T: DeserializeOwned;
 }
 
 impl FetchArgs {
@@ -24,10 +34,10 @@ impl FetchArgs {
 
 impl<T> PostArgs<T>
 where
-    T: DeserializeOwned,
+    T: Serialize + DeserializeOwned,
 {
-    pub fn new(url: String, todo: T) -> Self {
-        Self { url, todo }
+    pub fn new(url: String, body: T) -> Self {
+        Self { url, body }
     }
 }
 
@@ -39,19 +49,9 @@ impl FetchArgsToJsValue for FetchArgs {
 
 impl<T> PostArgsToJsValue<T> for PostArgs<T>
 where
-    T: DeserializeOwned + Serialize,
+    T: Serialize + DeserializeOwned,
 {
-    fn url_to_js_value(self, _key: String) -> Result<JsValue, Error> {
-        to_value(&PostArgs::new(self.url, self.todo))
+    fn url_to_js_value(url: String,body: T) -> Result<JsValue, Error> {
+        to_value(&PostArgs::new(url,body))
     }
-}
-
-pub trait FetchArgsToJsValue {
-    fn url_to_js_value(url: String) -> Result<JsValue, Error>;
-}
-
-pub trait PostArgsToJsValue<T> {
-    fn url_to_js_value(self, key: String) -> Result<JsValue, Error>
-    where
-        T: DeserializeOwned;
 }

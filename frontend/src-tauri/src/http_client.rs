@@ -10,11 +10,11 @@ pub async fn fetch(url: String) -> Result<Vec<Todo>, String> {
 }
 
 #[tauri::command]
-pub async fn post(url: String, todo: CreateTodo) -> Result<(), String> {
+pub async fn post(url: String, body: CreateTodo) -> Result<(), String> {
     let client = Client::new();
     client
         .post(url)
-        .json(&todo)
+        .json(&body)
         .header(CONTENT_TYPE, "application_json")
         .send()
         .await

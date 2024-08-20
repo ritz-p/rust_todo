@@ -3489,6 +3489,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-sys",
+ "tokio",
 ]
 
 [[package]]
