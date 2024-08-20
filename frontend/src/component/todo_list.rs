@@ -1,5 +1,8 @@
 use crate::utils::{js_bind::FromJsValue, wasm::invoke};
-use crate::{props::todo_list_props::TodoListProps, utils::request::get::{GetArgsToJsValue,GetArgs}};
+use crate::{
+    props::todo_list_props::TodoListProps,
+    utils::request::get::{GetArgs, GetArgsToJsValue},
+};
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},

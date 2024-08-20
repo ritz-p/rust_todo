@@ -1,6 +1,6 @@
 use serde::Serialize;
-use wasm_bindgen::JsValue;
 use serde_wasm_bindgen::{to_value, Error};
+use wasm_bindgen::JsValue;
 #[derive(Serialize)]
 pub struct GetArgs {
     pub url: String,
