@@ -3,7 +3,7 @@ name: Dockerfile Format and Merge
 on:
   push:
     branch: master
-    paths: ['Dockerfile']
+    paths: ['Dockerfile','.github/workflows/dockerfile-format.yml']
 
 jobs:
   format:
