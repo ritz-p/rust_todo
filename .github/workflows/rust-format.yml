@@ -15,8 +15,7 @@ jobs:
 
     - name: install rustfmt
       run: | 
-        rustup toolchain install nightly
-        rustup component add rustfmt
+        rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
 
     - name: run rustfmt
       run: cargo +nightly fmt
