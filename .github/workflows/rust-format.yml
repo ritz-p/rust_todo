@@ -1,4 +1,4 @@
-name: Format and Merge
+name: Rust Format and Merge
 
 on:
   push:

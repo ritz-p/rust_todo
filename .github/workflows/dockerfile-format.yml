@@ -1,4 +1,4 @@
-name: Format and Merge
+name: Dockerfile Format and Merge
 
 on:
   push:
