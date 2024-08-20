@@ -3,7 +3,7 @@ name: Format and Merge
 on:
   push:
     branch: master
-    paths: ['**/*.rs','.github/workflows/rust-format.yml']
+    paths: ['Dockerfile']
 
 jobs:
   format:
@@ -13,21 +13,25 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: install rustfmt
-      run: | 
-        rustup toolchain install nightly-x86_64-unknown-linux-gnu
-        rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
 
-    - name: run rustfmt
-      run: cargo +nightly fmt
+    - name: Install Hadolint
+      run: |
+        wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+        chmod +x /bin/hadolint
+
+    - name: Lint Dockerfile
+      run: |
+        hadolint Dockerfile
 
     - name: create pull request
       id: pr
       uses: peter-evans/create-pull-request@v6
       with:
-        commit-message: 'fix: format rust file'
+        commit-message: 'fix: format Dockerfile'
         title: Auto format .rs files
-        branch: fmt/rust
+        branch: fmt/dockerfile
 
     - name: push output
       run: |
