@@ -1,6 +1,5 @@
-use crate::utils::request_struct::FetchArgsToJsValue;
 use crate::utils::{js_bind::FromJsValue, wasm::invoke};
-use crate::{props::todo_list_props::TodoListProps, utils::request_struct::FetchArgs};
+use crate::{props::todo_list_props::TodoListProps, utils::request::get::{GetArgsToJsValue,GetArgs}};
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
@@ -20,7 +19,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
         let todo_list = todo_list.clone();
         use_effect_with(true, move |_| {
             spawn_local(async move {
-                let args = FetchArgs::url_to_js_value(url);
+                let args = GetArgs::url_to_js_value(url);
                 match args {
                     Ok(serialized_args) => {
                         console::log_1(&serialized_args);

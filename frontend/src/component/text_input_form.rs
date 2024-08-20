@@ -1,6 +1,5 @@
-use crate::utils::request_struct::PostArgsToJsValue;
 use crate::utils::wasm::invoke;
-use crate::{props::task_input_form_props::TextInputFormProps, utils::request_struct::PostArgs};
+use crate::{props::task_input_form_props::TextInputFormProps, utils::request::post::{PostArgs,PostArgsToJsValue}};
 
 use patternfly_yew::{
     components::{

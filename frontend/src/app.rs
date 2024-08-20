@@ -11,7 +11,7 @@ pub fn app() -> Html {
     html! {
         <>
             <TextInputForm url={url} function="post" form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_lable="Reset" onsubmit={onclick_todo}/>
-            <TodoList todo_list={todo_list} function="fetch" url={url}/>
+            <TodoList todo_list={todo_list} function="get" url={url}/>
         </>
     }
 }
