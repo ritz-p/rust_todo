@@ -17,7 +17,7 @@ jobs:
       run: rustup component add rustfmt
 
     - name: run rustfmt
-      run: cargo fmt
+      run: cargo +nightly fmt
     - name: create pull request
       id: pr
       uses: peter-evans/create-pull-request@v6
