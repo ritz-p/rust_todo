@@ -17,13 +17,13 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Install Hadolint
-        run: |
-          wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-          chmod +x /bin/hadolint
+      run: |
+        wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+        chmod +x /bin/hadolint
 
     - name: Lint Dockerfile
-        run: |
-          hadolint Dockerfile
+      run: |
+        hadolint Dockerfile
 
     - name: create pull request
       id: pr
