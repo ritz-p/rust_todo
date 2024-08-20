@@ -1,7 +1,7 @@
 FROM rust:1.79
 
-RUN apt update && \
-    apt install -y vim clang cmake libssl-dev build-essential \
+RUN apt-get update && \
+    apt-get install -y vim clang cmake libssl-dev build-essential \
     postgresql-client libwebkit2gtk-4.1-dev curl wget \
     file libssl-dev libxdo-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev \
     x11-apps gnupg ca-certificates fonts-noto-cjk

@@ -1,0 +1,4 @@
+failure-threshold: error
+ignored:
+  - DL3059
+  - DL3045

@@ -1,4 +1,4 @@
-name: Dockerfile Format and Merge
+name: Dockerfile lint
 
 on:
   push:
@@ -24,15 +24,3 @@ jobs:
     - name: Lint Dockerfile
       run: |
         hadolint Dockerfile
-
-    - name: create pull request
-      id: pr
-      uses: peter-evans/create-pull-request@v6
-      with:
-        commit-message: 'fix: format Dockerfile'
-        title: Auto format .rs files
-        branch: fmt/dockerfile
-
-    - name: push output
-      run: |
-          echo "pr_number=${{ steps.pr.outputs.pull-request-number }}" >> $GITHUB_ENV
