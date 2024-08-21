@@ -6,7 +6,9 @@ use crate::{
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
+    title::{Level,Title},
 };
+use patternfly_yew::core::Size;
 use serde_wasm_bindgen::Error;
 use shared_struct::todo::mount::object::todo::Todo;
 use wasm_bindgen_futures::spawn_local;
@@ -45,16 +47,19 @@ pub fn TodoList(props: &TodoListProps) -> Html {
         });
     }
     html!(
-        <PageSectionGroup>
-            <PageSection>
-                <List r#type={ListType::Bordered}>
-                    { for todo_list.iter().map(|todo| html_nested!{
-                        <ListItem>
-                            {todo.text.clone()}
-                        </ListItem>
-                    }) }
-                </List>
-            </PageSection>
-        </PageSectionGroup>
+        <>
+            <Title level={Level::H5} size={Size::Large}>{"Todo List"}</Title>
+            <PageSectionGroup>
+                <PageSection>
+                    <List r#type={ListType::Bordered}>
+                        { for todo_list.iter().map(|todo| html_nested!{
+                            <ListItem>
+                                {todo.text.clone()}
+                            </ListItem>
+                        }) }
+                    </List>
+                </PageSection>
+            </PageSectionGroup>
+        </>
     )
 }

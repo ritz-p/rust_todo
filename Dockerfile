@@ -7,7 +7,8 @@ RUN apt-get update && \
     x11-apps gnupg ca-certificates fonts-noto-cjk
 
 COPY rust-toolchain.toml .
-RUN rustup component add rls rust-analysis rust-src rustfmt clippy && \
+RUN rustup component add rls rust-analysis rust-src clippy && \
+    rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt && \
     cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli create-tauri-app && \
     rustup install nightly
 RUN cargo install trunk --locked

@@ -12,8 +12,8 @@ dependencies = ["db_create"]
 cwd = "/workspace"
 
 [tasks.format]
-command = "cargo"
-args = ["+nightly","fmt"]
+command = "rustup"
+args = ["run","nightly","cargo","fmt"]
 
 [tasks.back]
 command = "cargo"
