@@ -1,7 +1,4 @@
-use patternfly_yew::components::{
-    button::Button,
-    form::ActionGroup,
-};
+use patternfly_yew::components::{button::Button, form::ActionGroup};
 use yew::{function_component, html, Callback, Html};
 
 use crate::props::binary_choice_props::BinaryChoiceProps;

@@ -8,8 +8,18 @@ pub struct FormLayoutProps {
     pub child: Html,
 }
 
-impl FormLayoutProps{
-    pub fn new(label: String,onsubmit: Callback<SubmitEvent>,required: bool,child: Html) -> Self{
-        Self { label, onsubmit, required, child }
+impl FormLayoutProps {
+    pub fn new(
+        label: String,
+        onsubmit: Callback<SubmitEvent>,
+        required: bool,
+        child: Html,
+    ) -> Self {
+        Self {
+            label,
+            onsubmit,
+            required,
+            child,
+        }
     }
 }

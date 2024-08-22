@@ -8,13 +8,18 @@ pub struct TextInputFieldProps {
     pub required: bool,
 }
 
-impl TextInputFieldProps{
-    pub fn new(value: String,placeholder: String,oninput: Callback<InputEvent>,required: bool) -> Self{
-        Self{
+impl TextInputFieldProps {
+    pub fn new(
+        value: String,
+        placeholder: String,
+        oninput: Callback<InputEvent>,
+        required: bool,
+    ) -> Self {
+        Self {
             value,
             placeholder,
             oninput,
-            required
+            required,
         }
     }
 }

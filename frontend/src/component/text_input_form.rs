@@ -1,6 +1,6 @@
 use crate::component::binary_choice::BinaryChoice;
 use crate::component::form_layout::FormLayout;
-use crate::component::text_input_field::{TextInputField};
+use crate::component::text_input_field::TextInputField;
 use crate::props::binary_choice_props::BinaryChoiceProps;
 use crate::props::form_layout_props::FormLayoutProps;
 use crate::props::text_input_field_props::TextInputFieldProps;
@@ -48,7 +48,12 @@ pub fn TextInputForm(props: &TextInputFormProps) -> Html {
         ButtonVariant::Secondary,
         Some(onreset),
     );
-    let text_input_field_props = TextInputFieldProps::new(props.text_input.clone(), "Task Name".to_string(), oninput,true);
+    let text_input_field_props = TextInputFieldProps::new(
+        props.text_input.clone(),
+        "Task Name".to_string(),
+        oninput,
+        true,
+    );
     let text_input_field = html! {
         <TextInputField ..text_input_field_props />
     };
@@ -85,7 +90,8 @@ pub fn TextInputForm(props: &TextInputFormProps) -> Html {
             })
         })
     };
-    let form_layout_props = FormLayoutProps::new("Task Name".to_string(),onsubmit,true,text_input_field);
+    let form_layout_props =
+        FormLayoutProps::new("Task Name".to_string(), onsubmit, true, text_input_field);
     html!(
         <PageSectionGroup>
             <PageSection>
