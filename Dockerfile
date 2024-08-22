@@ -16,7 +16,7 @@ RUN cargo install trunk --locked
 RUN rustup target add wasm32-unknown-unknown
 
 RUN echo 'alias cargo make="cm"' >> ~/.bashrc
-
+RUN echo 'alial cargo tauri="tauri"' >> ~/.bashrc
 WORKDIR /workspace
 ENV USER=root
 ENV RUST_BACKTRACE=1

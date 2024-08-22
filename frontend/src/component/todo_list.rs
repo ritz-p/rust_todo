@@ -6,7 +6,7 @@ use crate::{
 use patternfly_yew::components::{
     list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
-    title::{Level,Title},
+    title::{Level, Title},
 };
 use patternfly_yew::core::Size;
 use serde_wasm_bindgen::Error;
