@@ -1,12 +1,14 @@
 # 修正箇所
-- hyper::body::to_bytes() -> http_body_util::BodyExt::collect().await.unwrap().to_bytes()
+- ```hyper::body::to_bytes() を以下に修正```
+    - ```http_body_util::BodyExt::collect().await.unwrap().to_bytes()```
     - to_bytes() はメモリを無制限に使用される可能性があったため消された
-- impl<T,S> FromRequest<S> for ValidateJson<T>
+- ```impl<T,S> FromRequest<S> for ValidateJson<T>```
     - from_request の引数が req だけでなく state も必要になった
     - fron_request 追っていったら state 使ってなくて草
 
 # How to build
 ## 1. Environment
+
 1. Build the Docker image and container in WSL with command below
 ```
 docker-compose up -d --build
