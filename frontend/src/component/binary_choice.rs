@@ -9,7 +9,7 @@ pub fn BinaryChoice(props: &BinaryChoiceProps) -> Html {
         <ActionGroup>
             <Button
                 label={props.first_button_label.clone()}
-                onclick={props.second_button_onclick.clone().unwrap_or_else(|| Callback::from(|_| {}))}
+                onclick={props.first_button_onclick.clone().unwrap_or_else(|| Callback::from(|_| {}))}
                 variant={props.first_button_variant}
                 r#type={props.first_button_type}
             />

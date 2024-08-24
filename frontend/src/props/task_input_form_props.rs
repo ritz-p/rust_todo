@@ -8,6 +8,6 @@ pub struct TextInputFormProps {
     pub text_input: String,
     pub text_input_placeholder: String,
     pub submit_label: String,
-    pub reset_lable: String,
+    pub reset_label: String,
     pub onsubmit: Callback<String>,
 }

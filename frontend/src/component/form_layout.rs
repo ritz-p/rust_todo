@@ -1,4 +1,4 @@
-use patternfly_yew::components::form::{Form, FormGroup};
+use patternfly_yew::components::form::{Form, FormGroup, TextInput};
 use yew::{function_component, html, Html};
 
 use crate::props::form_layout_props::FormLayoutProps;
@@ -11,7 +11,8 @@ pub fn FormLayout(props: &FormLayoutProps) -> Html {
                 label={props.label.clone()}
                 required={props.required.clone()}
             >
-                {props.child.clone()}
+                <TextInput onchange={props.onchange.clone()} value={props.value.clone()} placeholder="Just enter foo" required={props.required.clone()}></TextInput>
+                { props.child.clone() }
             </FormGroup>
         </Form>
     )

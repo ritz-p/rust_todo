@@ -44,3 +44,8 @@ dependencies = ["trunk-clean"]
 command = "cargo"
 args = ["clean"]
 
+[tasks.front]
+dependencies = ["format"]
+command = "cargo"
+args = ["tauri","dev"]
+cwd = "/workspace/frontend"

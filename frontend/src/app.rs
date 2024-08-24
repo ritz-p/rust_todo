@@ -1,4 +1,4 @@
-use crate::component::{text_input_form::TextInputForm, todo_list::TodoList};
+use crate::component::{task_input_form::TextInputForm, todo_list::TodoList};
 use shared_struct::todo::mount::object::todo::Todo;
 use yew::prelude::*;
 
@@ -10,7 +10,7 @@ pub fn app() -> Html {
 
     html! {
         <>
-            <TextInputForm url={url} function="post" form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_lable="Reset" onsubmit={onclick_todo}/>
+            <TextInputForm url={url} function="post" form_label="Task name" text_input="" text_input_placeholder="Sample Todo" submit_label="Submit" reset_label="Reset" onsubmit={onclick_todo}/>
             <TodoList todo_list={todo_list} function="get" url={url}/>
         </>
     }
