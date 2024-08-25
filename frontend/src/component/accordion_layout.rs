@@ -6,7 +6,7 @@ use yew::{function_component, html, html_nested, use_state, virtual_dom::VChild,
 use crate::props::accordion_layout_props::AccordionLayoutProps;
 
 #[function_component]
-pub fn AccordionLayout(props: &AccordionLayoutProps) -> Html{
+pub fn AccordionLayout(props: &AccordionLayoutProps) -> Html {
     let accordion_item_list = props.accordion_item_list.clone();
     let state = use_state(HashSet::<usize>::new);
     let toggle = |key: usize| {
