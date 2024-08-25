@@ -47,5 +47,5 @@ cargo tauri build
 ```
 
 ## Todo
-1. http request をいい感じにできるようにする
+1. [x] http request をいい感じにできるようにする
 2. Tauri に書くべき部分とそうじゃない部分をわかりやすくする

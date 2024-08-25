@@ -1,10 +1,11 @@
+use crate::component::accordion_layout::AccordionLayout;
+use crate::props::accordion_layout_props::{AccordionItemProps, AccordionLayoutProps};
 use crate::utils::{js_bind::FromJsValue, wasm::invoke};
 use crate::{
     props::todo_list_props::TodoListProps,
     utils::request::get::{GetArgs, GetArgsToJsValue},
 };
 use patternfly_yew::components::{
-    list::{List, ListItem, ListType},
     page::{PageSection, PageSectionGroup},
     title::{Level, Title},
 };
@@ -46,18 +47,16 @@ pub fn TodoList(props: &TodoListProps) -> Html {
             })
         });
     }
+    let accordion_item_props_list:Vec<AccordionItemProps> = (todo_list).iter().enumerate().map(|(index,todo)| {
+        AccordionItemProps::new(todo.text.clone(), index.to_string())
+    }).collect();
+    let accordion_layout_props = AccordionLayoutProps::new(false, false, accordion_item_props_list);
     html!(
         <>
             <Title level={Level::H5} size={Size::Large}>{"Todo List"}</Title>
             <PageSectionGroup>
                 <PageSection>
-                    <List r#type={ListType::Bordered}>
-                        { for todo_list.iter().map(|todo| html_nested!{
-                            <ListItem>
-                                {todo.text.clone()}
-                            </ListItem>
-                        }) }
-                    </List>
+                    <AccordionLayout ..accordion_layout_props></AccordionLayout>
                 </PageSection>
             </PageSectionGroup>
         </>
