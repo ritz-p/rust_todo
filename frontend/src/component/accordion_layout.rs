@@ -31,7 +31,7 @@ pub fn AccordionLayout(props: &AccordionLayoutProps) -> Html {
                         expanded={state.contains(&index)}
                     >
                         {item_props.content.clone()}
-                        
+
                     </AccordionItem>
                 }.into();
                 item
