@@ -1,10 +1,10 @@
-use yew::{Properties};
+use yew::{Callback, Properties};
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct AccordionLayoutProps {
     pub large: bool,
     pub bordered: bool,
-    pub accordion_item_list: Vec<AccordionItemProps>
+    pub accordion_item_list: Vec<AccordionItemProps>,
 }
 
 #[derive(Properties, PartialEq, Clone)]

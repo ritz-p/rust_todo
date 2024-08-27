@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use crate::component::accordion_layout::AccordionLayout;
 use crate::props::accordion_layout_props::{AccordionItemProps, AccordionLayoutProps};
 use crate::utils::{js_bind::FromJsValue, wasm::invoke};
@@ -19,13 +21,14 @@ use yew::prelude::*;
 #[function_component]
 pub fn TodoList(props: &TodoListProps) -> Html {
     let todo_list = use_state(Vec::new);
-    let url = props.url.clone();
+    let url = Rc::new(props.url.clone());
     let function = props.function.clone();
     {
         let todo_list = todo_list.clone();
+        let url = url.clone();
         use_effect_with(true, move |_| {
             spawn_local(async move {
-                let args = GetArgs::url_to_js_value(url);
+                let args = GetArgs::url_to_js_value(url.clone().to_string());
                 match args {
                     Ok(serialized_args) => {
                         console::log_1(&serialized_args);
@@ -47,6 +50,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
             })
         });
     }
+
     let accordion_item_props_list:Vec<AccordionItemProps> = (todo_list).iter().enumerate().map(|(index,todo)| {
         AccordionItemProps::new(todo.text.clone(), index.to_string())
     }).collect();
