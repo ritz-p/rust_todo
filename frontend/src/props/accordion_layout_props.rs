@@ -1,4 +1,4 @@
-use yew::{Callback, Properties};
+use yew::Properties;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct AccordionLayoutProps {
@@ -13,23 +13,18 @@ pub struct AccordionItemProps {
     pub content: String,
 }
 
-impl AccordionLayoutProps{
-    pub fn new(
-        large: bool,
-        bordered: bool,
-        accordion_item_list: Vec<AccordionItemProps>
-    ) -> Self{
-        Self { large, bordered, accordion_item_list }
+impl AccordionLayoutProps {
+    pub fn new(large: bool, bordered: bool, accordion_item_list: Vec<AccordionItemProps>) -> Self {
+        Self {
+            large,
+            bordered,
+            accordion_item_list,
+        }
     }
 }
 
-impl AccordionItemProps{
-    pub fn new(
-        title: String,
-        content: String,
-    ) -> Self{
-        Self{
-            title,content
-        }
+impl AccordionItemProps {
+    pub fn new(title: String, content: String) -> Self {
+        Self { title, content }
     }
 }
