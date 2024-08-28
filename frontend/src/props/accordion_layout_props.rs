@@ -11,6 +11,7 @@ pub struct AccordionLayoutProps {
 pub struct AccordionItemProps {
     pub title: String,
     pub content: String,
+    pub task_id: i32,
 }
 
 impl AccordionLayoutProps {
@@ -24,7 +25,11 @@ impl AccordionLayoutProps {
 }
 
 impl AccordionItemProps {
-    pub fn new(title: String, content: String) -> Self {
-        Self { title, content }
+    pub fn new(title: String, content: String, task_id: i32) -> Self {
+        Self {
+            title,
+            content,
+            task_id,
+        }
     }
 }

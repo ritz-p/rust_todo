@@ -1,6 +1,7 @@
 use std::rc::Rc;
 
 use patternfly_yew::components::{button::Button, form::ActionGroup};
+use wasm_bindgen_futures::spawn_local;
 use web_sys::console;
 use yew::{function_component, html, Callback, Html};
 
@@ -18,13 +19,15 @@ pub fn SingleButton(props: &SingleButtonProps) -> Html {
     let onclick = {
         Callback::from(move |_| {
             let args = GetArgs::url_to_js_value(url.to_string());
-            match args {
-                Ok(serialized_args) => {
-                    console::log_1(&serialized_args);
-                    // invoke("delete",serialized_args).await;
+            spawn_local(async move {
+                match args {
+                    Ok(serialized_args) => {
+                        console::log_1(&serialized_args);
+                        invoke("delete", serialized_args).await;
+                    }
+                    Err(_) => todo!(),
                 }
-                Err(_) => todo!(),
-            }
+            })
         })
     };
     html!(

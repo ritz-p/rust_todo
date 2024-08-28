@@ -38,6 +38,8 @@ pub async fn patch(url: String, body: UpdateTodo) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub async fn delete() -> Result<(), String> {
-    todo!();
+pub async fn delete(url: String) -> Result<(), String> {
+    let client = Client::new();
+    client.delete(url).send().await.map_err(|e| e.to_string())?;
+    Ok(())
 }

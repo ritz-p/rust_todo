@@ -53,7 +53,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
     let accordion_item_props_list: Vec<AccordionItemProps> = (todo_list)
         .iter()
         .enumerate()
-        .map(|(index, todo)| AccordionItemProps::new(todo.text.clone(), index.to_string()))
+        .map(|(index, todo)| AccordionItemProps::new(todo.text.clone(), index.to_string(), todo.id))
         .collect();
     let accordion_layout_props = AccordionLayoutProps::new(false, false, accordion_item_props_list);
     html!(
