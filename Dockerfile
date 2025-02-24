@@ -1,4 +1,4 @@
-FROM rust:1.79
+FROM rust:1.85
 
 RUN apt-get update && \
     apt-get install -y vim clang cmake libssl-dev build-essential \
@@ -7,6 +7,8 @@ RUN apt-get update && \
     x11-apps gnupg ca-certificates fonts-noto-cjk
 
 COPY rust-toolchain.toml .
+RUN rustup update && \
+    rustup update nightly
 RUN rustup component add rls rust-analysis rust-src clippy && \
     rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt && \
     cargo install cargo-edit cargo-watch cargo-make sqlx-cli tauri-cli create-tauri-app && \
@@ -15,8 +17,8 @@ RUN cargo install trunk --locked
 
 RUN rustup target add wasm32-unknown-unknown
 
-RUN echo 'alias cargo make="cm"' >> ~/.bashrc
-RUN echo 'alial cargo tauri="tauri"' >> ~/.bashrc
+RUN echo 'alias cm="cargo make"' >> ~/.bashrc
+RUN echo 'alias tauri="cargo tauri"' >> ~/.bashrc
 WORKDIR /workspace
 ENV USER=root
 ENV RUST_BACKTRACE=1
