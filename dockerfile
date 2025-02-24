@@ -17,6 +17,10 @@ RUN cargo install trunk --locked
 
 RUN rustup target add wasm32-unknown-unknown
 
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt update && \
+    apt install -y yarn
 RUN echo 'alias cm="cargo make"' >> ~/.bashrc
 RUN echo 'alias tauri="cargo tauri"' >> ~/.bashrc
 WORKDIR /workspace

@@ -11,6 +11,7 @@ fn greet(name: &str) -> String {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
         .invoke_handler(tauri::generate_handler![greet, get, post, patch, delete])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

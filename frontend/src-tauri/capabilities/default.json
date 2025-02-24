@@ -1,0 +1,25 @@
+
+{
+    "$schema": "../gen/schemas/desktop-schema.json",
+    "identifier": "main-capability",
+    "description": "Capability for the main window",
+    "windows": ["main"],
+    "permissions": [
+        "core:window:default",
+        "core:window:allow-start-dragging",
+        "core:default",
+        "shell:allow-open",
+        "core:window:allow-close",
+        "core:window:allow-minimize",
+        "core:window:allow-toggle-maximize",
+        "http:allow-fetch",
+        "http:allow-fetch-cancel",
+        "http:allow-fetch-read-body",
+        "http:allow-fetch-send",
+        "http:default",
+        "http:deny-fetch",
+        "http:deny-fetch-cancel",
+        "http:deny-fetch-read-body",
+        "http:deny-fetch-send"
+    ]
+  }

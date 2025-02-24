@@ -1,9 +1,10 @@
 {
-    "name": "rust-todo-frontend",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-      "@fortawesome/fontawesome-free": "6.6.0",
-      "@patternfly/patternfly": "5.3.1"
-    }
+  "name": "rust-todo-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "6.6.0",
+    "@patternfly/patternfly": "5.3.1",
+    "@tauri-apps/plugin-http": "~2"
   }
+}

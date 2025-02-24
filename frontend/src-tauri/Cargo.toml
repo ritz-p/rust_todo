@@ -8,7 +8,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1", features = [] }
+tauri-build = { version = "2", features = ["config-json5"] }
 
 [dependencies]
 tauri = { workspace = true }
@@ -16,8 +16,9 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 tauri-sys = { workspace = true }
 shared_struct = { path = "../../shared_struct" }
-reqwest = { workspace = true }
+tauri-plugin-http = { workspace = true }
 tokio = { workspace = true }
+tauri-plugin-shell = { workspace = true }
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
